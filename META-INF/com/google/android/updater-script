@@ -1,0 +1,86 @@
+# Create and show a progress bar that can go up to 100%
+show_progress(1,0);
+# ro.product.device can be found in /system/build.prop, but for some reason TWRP also puts it in /default.prop with its own value
+#    e.g. osprey instead of osprey_u2
+ui_print("Make note of this in case of issues: ro.product.device=" + getprop("ro.product.device"));
+
+
+# Update logo based on the device
+ui_print("Updating boot logo");
+if
+    # Moto G 2013
+    is_substring("falcon", getprop("ro.product.device")) ||
+    # Moto G 2013 LTE
+    is_substring("peregrine", getprop("ro.product.device"))
+then
+    package_extract_file("logo.bin", "/dev/block/platform/msm_sdcc.1/by-name/logo");
+    # This bit taken from updater-script from a Moto G 2013 OTA
+    # apply_raw_image seems to be unique to Motorola's version of update-binary
+#    assert(package_extract_file("logo/moto-g-2013/logo.bin", "/tmp/logo.bin"),
+#       apply_raw_image("/tmp/logo.bin", "logo"),
+#       delete("/tmp/logo.bin"));
+else
+    if
+        # Moto G 2014
+        is_substring("titan", getprop("ro.product.device")) ||
+        # Moto G 2014 LTE
+        is_substring("thea", getprop("ro.product.device"))
+    then
+        package_extract_file("logo.bin", "/dev/block/platform/msm_sdcc.1/by-name/logo");
+        # This bit taken from updater-script from a Moto G 2014 OTA
+        # apply_raw_image seems to be unique to Motorola's version of update-binary
+#        assert(package_extract_file("logo/moto-g-2014/logo.bin", "/tmp/logo.bin"),
+#           apply_raw_image("/tmp/logo.bin", "logo"),
+#           delete("/tmp/logo.bin"));
+    else
+        if
+            # Moto G 2015
+            is_substring("osprey", getprop("ro.product.device"))
+        then
+            package_extract_file("logo/moto-g-2015/logo.bin", "/dev/block/bootdevice/by-name/logo");
+        else
+            abort("ERROR: device mismatch. Logo not updated. Aborting.");
+        endif;
+    endif;
+endif;
+# Update progress to 50%
+set_progress(0.5);
+
+
+# Update boot animation
+ui_print("Updating boot animation");
+# Hack to check if /data/local/moodle/bootanimation.zip exists
+if
+    sha1_check(read_file("/data/local/moodle/bootanimation.zip")) != ""
+then
+    # If  /data/local/moodle/bootanimation.zip, we can save ourselves some work and skip mounting /system
+    package_extract_file("bootanimation.zip", "/data/local/moodle/bootanimation.zip");
+else
+    # Otherwise update the boot animation based on the device
+    if
+        is_substring("falcon", getprop("ro.product.device")) ||
+        is_substring("peregrine", getprop("ro.product.device")) ||
+        is_substring("titan", getprop("ro.product.device")) ||
+        is_substring("thea", getprop("ro.product.device"))
+    then
+        # Next line taken from a Moto G 2013 OTA
+        mount("ext4", "EMMC", "/dev/block/platform/msm_sdcc.1/by-name/system", "/system", "max_batch_time=0,commit=1,data=ordered,barrier=1,errors=panic,nodelalloc");
+        package_extract_file("bootanimation.zip", "/system/media/bootanimation.zip");
+        unmount("/system");
+    else
+        # Moto G 2015 has a different location in /dev for the system partition
+        if
+            is_substring("osprey", getprop("ro.product.device"))
+        then
+            # Next line taken from a Moto G 2015 OTA
+            mount("ext4", "EMMC", "/dev/block/bootdevice/by-name/system", "/system", "max_batch_time=0,commit=1,data=ordered,barrier=1,errors=panic,nodelalloc");
+            package_extract_file("bootanimation.zip", "/system/media/bootanimation.zip");
+            unmount("/system");
+        else
+            abort("ERROR: device mismatch. Boot animation not updated. Aborting.");
+        endif;
+    endif;
+endif;
+# Update progress to 100%
+set_progress(1);
+ui_print("Done");
