@@ -14,11 +14,6 @@ if
     is_substring("peregrine", getprop("ro.product.device"))
 then
     package_extract_file("logo/moto-g-2013/logo.bin", "/dev/block/platform/msm_sdcc.1/by-name/logo");
-    # This bit taken from updater-script from Moto G 2013 Android 5.0.2 OTA update
-    # apply_raw_image seems to be unique to Motorola's version of update-binary
-#    assert(package_extract_file("logo/moto-g-2013/logo.bin", "/tmp/logo.bin"),
-#       apply_raw_image("/tmp/logo.bin", "logo"),
-#       delete("/tmp/logo.bin"));
 else
     if
         # Moto G 2014
@@ -27,11 +22,6 @@ else
         is_substring("thea", getprop("ro.product.device"))
     then
         package_extract_file("logo/moto-g-2014/logo.bin", "/dev/block/platform/msm_sdcc.1/by-name/logo");
-        # This bit taken from updater-script from Moto G 2014 Android 5.0.1 OTA update
-        # apply_raw_image seems to be unique to Motorola's version of update-binary
-#        assert(package_extract_file("logo/moto-g-2014/logo.bin", "/tmp/logo.bin"),
-#           apply_raw_image("/tmp/logo.bin", "logo"),
-#           delete("/tmp/logo.bin"));
     else
         if
             # Moto G 2015
