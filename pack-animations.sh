@@ -14,9 +14,16 @@ for logo in `ls -1 boot-animations/*/logo/*/logo.bin`; do
     fi
 done
 
+# Abort on error
 if [ "$error" = true ]; then
     echo "Please reduce the size of logo files and try again"
     exit 1
 fi
 
-for animation in `ls -1 boot-animations`; do cd boot-animations/$animation; zip -r ../../$prefix$animation.zip .; cd ../..; zip -r $prefix$animation.zip META-INF; done
+# Zip the boot animations
+for animation in `ls -1 boot-animations`; do
+    cd boot-animations/$animation
+    zip -r ../../$prefix$animation.zip .
+    cd ../..
+    zip -r $prefix$animation.zip META-INF
+done
