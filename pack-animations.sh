@@ -1,8 +1,8 @@
 #!/bin/bash
 
-PREFIX=bootanimation-
+prefix=bootanimation-
 
 # Cleanup
-rm -f $PREFIX*.zip
+rm -f $prefix*.zip
 
-for ANIMATION in `ls -1 boot-animations`; do cd boot-animations/$ANIMATION; zip -r ../../$PREFIX$ANIMATION.zip .; cd ../..; zip -r $PREFIX$ANIMATION.zip META-INF; done
+for animation in `ls -1 boot-animations`; do cd boot-animations/$animation; zip -r ../../$prefix$animation.zip .; cd ../..; zip -r $prefix$animation.zip META-INF; done
