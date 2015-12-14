@@ -1,12 +1,17 @@
 # motorola-boot-animations
-All official Motorola Android boot animations for the Moto G and matching logos
+All official Motorola Android boot animations for the Moto G
 
-Installation
----
+#### Features
+- Only official boot animations from Motorola
+- Matching logos included
+- Should be compatible with all versions of the Moto G, including LTE versions (see below for compatibility)
+- Carrier branding removed
+- Warning message removed for phones with unlocked bootloaders
+
+#### Installation
 See: [Installation](https://github.com/bmaupin/motorola-boot-animations/wiki/Installation)
 
-Compatibility
----
+#### Compatibility
 These boot animations should work with any model of the Moto G. Here's what's been tested so far:
 
 Phone | Model | ro.product.device | Status
@@ -14,8 +19,7 @@ Phone | Model | ro.product.device | Status
 Moto G 2013 US GSM (AWS) | XT1034 | falcon_umts | works
 Moto G 2015 US GSM |  XT1540 | osprey_u2 | works
 
-Animations
----
+#### Animations
 - April Fools'  
   [![aprilfool](http://img.youtube.com/vi/f6oEzvaesLA/0.jpg)](http://www.youtube.com/watch?v=f6oEzvaesLA)
   - Article from Motorola's blog: [The Download: Behind the Scenes of Our April Fools’ Animation](http://motorola-blog.blogspot.ca/2014/04/the-download-behind-scenes-of-our-april.html)
