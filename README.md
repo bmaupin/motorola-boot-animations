@@ -12,7 +12,7 @@ All official Motorola Android boot animations for the Moto G
 See: [Installation](https://github.com/bmaupin/motorola-boot-animations/wiki/Installation)
 
 #### Compatibility
-These boot animations should work with any model of the Moto G. Here's what's been tested so far:
+These boot animations should work with any model of the Moto G, but only with stock ROMs (custom ROMs use a different boot animation format). Here's what's been tested so far:
 
 Phone | Model | ro.product.device | Status
 --- | --- | --- | ---
