@@ -10,6 +10,8 @@ ui_print("Updating boot logo");
 if
     # Moto G 2013
     is_substring("falcon", getprop("ro.product.device")) ||
+    # Moto G 2013 (twrp-2.8.6.0-xt1032.img)
+    getprop("ro.product.device") == "xt1032" ||
     # Moto G 2013 LTE
     is_substring("peregrine", getprop("ro.product.device"))
 then
@@ -51,7 +53,8 @@ else
         is_substring("falcon", getprop("ro.product.device")) ||
         is_substring("peregrine", getprop("ro.product.device")) ||
         is_substring("titan", getprop("ro.product.device")) ||
-        is_substring("thea", getprop("ro.product.device"))
+        is_substring("thea", getprop("ro.product.device")) ||
+        getprop("ro.product.device") == "xt1032"
     then
         # Next line taken from updater-script from Moto G 2013 Android 5.0.2 OTA update
         mount("ext4", "EMMC", "/dev/block/platform/msm_sdcc.1/by-name/system", "/system", "max_batch_time=0,commit=1,data=ordered,barrier=1,errors=panic,nodelalloc");
