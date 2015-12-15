@@ -1,3 +1,6 @@
+# Reference: https://source.android.com/devices/tech/ota/inside_packages.html#edify-syntax
+
+
 # Create and show a progress bar that can go up to 100%
 show_progress(1,0);
 # ro.product.device can be found in /system/build.prop, but for some reason TWRP also puts it in /default.prop with its own value
