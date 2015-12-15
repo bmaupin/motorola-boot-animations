@@ -26,13 +26,26 @@ else
         abort("ERROR: device mismatch. Boot animation not updated. Aborting.");
     endif;
 endif;
-# Update progress to 25%
-set_progress(0.25);
+# Update progress to 20%
+set_progress(0.2);
 
 
 # ro.product.device can be found in /system/build.prop, but for some reason TWRP also puts it in /default.prop with its own value
 #    e.g. osprey instead of osprey_u2
 ui_print("Make note of this in case of issues: ro.product.device=" + getprop("ro.product.device"));
+
+
+# Update /system/bin/bootanimation if we're running a non-stock ROM
+if
+    # Test to see if we're running a non-stock ROM
+    # We need to get this directly from /system.build.prop since recoveries can override values from getprop()
+    file_getprop("/system/build.prop", "ro.modversion") != ""
+then
+    rename("/system/bin/bootanimation", "/system/bin/bootanimation.bak");
+    package_extract_file("bootanimation", "/system/bin/bootanimation");
+endif;
+# Update progress to 40%
+set_progress(0.4);
 
 
 # Update logo based on the device
@@ -65,8 +78,8 @@ else
         endif;
     endif;
 endif;
-# Update progress to 50%
-set_progress(0.5);
+# Update progress to 60%
+set_progress(0.6);
 
 
 # Update boot animation
@@ -80,8 +93,8 @@ then
 else
     package_extract_file("bootanimation.zip", "/system/media/bootanimation.zip");
 endif;
-# Update progress to 75%
-set_progress(0.75);
+# Update progress to 80%
+set_progress(0.8);
 
 
 # Unmount /system
