@@ -3,6 +3,33 @@
 
 # Create and show a progress bar that can go up to 100%
 show_progress(1,0);
+
+
+# Mount /system
+if
+    is_substring("falcon", getprop("ro.product.device")) ||
+    is_substring("peregrine", getprop("ro.product.device")) ||
+    is_substring("titan", getprop("ro.product.device")) ||
+    is_substring("thea", getprop("ro.product.device")) ||
+    getprop("ro.product.device") == "xt1032"
+then
+    # Next line taken from updater-script from Moto G 2013 Android 5.0.2 OTA update
+    mount("ext4", "EMMC", "/dev/block/platform/msm_sdcc.1/by-name/system", "/system", "max_batch_time=0,commit=1,data=ordered,barrier=1,errors=panic,nodelalloc");
+else
+    # Moto G 2015 has a different location in /dev for the system partition
+    if
+        is_substring("osprey", getprop("ro.product.device"))
+    then
+        # Next line taken from updater-script from Moto G 2015 Android 5.1.1 OTA update
+        mount("ext4", "EMMC", "/dev/block/bootdevice/by-name/system", "/system", "max_batch_time=0,commit=1,data=ordered,barrier=1,errors=panic,nodelalloc");
+    else
+        abort("ERROR: device mismatch. Boot animation not updated. Aborting.");
+    endif;
+endif;
+# Update progress to 25%
+set_progress(0.25);
+
+
 # ro.product.device can be found in /system/build.prop, but for some reason TWRP also puts it in /default.prop with its own value
 #    e.g. osprey instead of osprey_u2
 ui_print("Make note of this in case of issues: ro.product.device=" + getprop("ro.product.device"));
@@ -51,32 +78,14 @@ then
     # If /data/local/moodle/bootanimation.zip exists, it overrides the boot animation in /system
     package_extract_file("bootanimation.zip", "/data/local/moodle/bootanimation.zip");
 else
-    # Otherwise update the boot animation based on the device
-    if
-        is_substring("falcon", getprop("ro.product.device")) ||
-        is_substring("peregrine", getprop("ro.product.device")) ||
-        is_substring("titan", getprop("ro.product.device")) ||
-        is_substring("thea", getprop("ro.product.device")) ||
-        getprop("ro.product.device") == "xt1032"
-    then
-        # Next line taken from updater-script from Moto G 2013 Android 5.0.2 OTA update
-        mount("ext4", "EMMC", "/dev/block/platform/msm_sdcc.1/by-name/system", "/system", "max_batch_time=0,commit=1,data=ordered,barrier=1,errors=panic,nodelalloc");
-        package_extract_file("bootanimation.zip", "/system/media/bootanimation.zip");
-        unmount("/system");
-    else
-        # Moto G 2015 has a different location in /dev for the system partition
-        if
-            is_substring("osprey", getprop("ro.product.device"))
-        then
-            # Next line taken from updater-script from Moto G 2015 Android 5.1.1 OTA update
-            mount("ext4", "EMMC", "/dev/block/bootdevice/by-name/system", "/system", "max_batch_time=0,commit=1,data=ordered,barrier=1,errors=panic,nodelalloc");
-            package_extract_file("bootanimation.zip", "/system/media/bootanimation.zip");
-            unmount("/system");
-        else
-            abort("ERROR: device mismatch. Boot animation not updated. Aborting.");
-        endif;
-    endif;
+    package_extract_file("bootanimation.zip", "/system/media/bootanimation.zip");
 endif;
+# Update progress to 75%
+set_progress(0.75);
+
+
+# Unmount /system
+unmount("/system");
 # Update progress to 100%
 set_progress(1);
 ui_print("Done");
