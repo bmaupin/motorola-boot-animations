@@ -90,21 +90,13 @@ set_progress(0.6);
 
 
 # Update logo based on the device
+ui_print("Updating boot logo");
 if
     # Moto G 2013
     is_substring("falcon", getprop("ro.product.device")) || is_substring("falcon", getprop("ro.build.product")) || is_substring("falcon", getprop("ro.cm.device")) ||
     getprop("ro.product.device") == "xt1032" || getprop("ro.build.product") == "xt1032" || getprop("ro.cm.device") == "xt1032" ||
     is_substring("peregrine", getprop("ro.product.device")) || is_substring("peregrine", getprop("ro.build.product")) || is_substring("peregrine", getprop("ro.cm.device"))
 then
-    # Back up logo if a backup doesn't exist yet
-    if
-        sha1_check(read_file("/sdcard/logo.bin.bak")) == ""
-    then
-        ui_print("Backing up boot logo");
-        run_program("/sbin/cp", "/dev/block/platform/msm_sdcc.1/by-name/logo", "/sdcard/logo.bin.bak");
-    endif;
-
-    ui_print("Updating boot logo");
     package_extract_file("logo/moto-g-2013/logo.bin", "/dev/block/platform/msm_sdcc.1/by-name/logo");
 else
     if
@@ -112,30 +104,12 @@ else
         is_substring("titan", getprop("ro.product.device")) || is_substring("titan", getprop("ro.build.product")) || is_substring("titan", getprop("ro.cm.device")) ||
         is_substring("thea", getprop("ro.product.device")) || is_substring("thea", getprop("ro.build.product")) || is_substring("thea", getprop("ro.cm.device"))
     then
-        # Back up logo if a backup doesn't exist yet
-        if
-            sha1_check(read_file("/sdcard/logo.bin.bak")) == ""
-        then
-            ui_print("Backing up boot logo");
-            run_program("/sbin/cp", "/dev/block/platform/msm_sdcc.1/by-name/logo", "/sdcard/logo.bin.bak");
-        endif;
-
-        ui_print("Updating boot logo");
         package_extract_file("logo/moto-g-2014/logo.bin", "/dev/block/platform/msm_sdcc.1/by-name/logo");
     else
         if
             # Moto G 2015
             is_substring("osprey", getprop("ro.product.device")) || is_substring("osprey", getprop("ro.build.product")) || is_substring("osprey", getprop("ro.cm.device"))
         then
-            # Back up logo if a backup doesn't exist yet
-            if
-                sha1_check(read_file("/sdcard/logo.bin.bak")) == ""
-            then
-                ui_print("Backing up boot logo");
-                run_program("/sbin/cp", "/dev/block/bootdevice/by-name/logo", "/sdcard/logo.bin.bak");
-            endif;
-
-            ui_print("Updating boot logo");
             package_extract_file("logo/moto-g-2015/logo.bin", "/dev/block/bootdevice/by-name/logo");
         else
             abort("ERROR: device mismatch. Logo not updated. Aborting.");
