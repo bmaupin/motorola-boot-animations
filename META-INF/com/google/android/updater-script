@@ -72,9 +72,26 @@ ui_print("Updating boot animation");
 if
     sha1_check(read_file("/data/local/moodle/bootanimation.zip")) != ""
 then
+    # Back up /data/local/moodle/bootanimation.zip if a backup doesn't exist yet
+    if
+        sha1_check(read_file("/data/local/moodle/bootanimation.zip.bak")) == ""
+    then
+        ui_print("Backing up /data/local/moodle/bootanimation.zip");
+        rename("/data/local/moodle/bootanimation.zip", "/data/local/moodle/bootanimation.zip.bak");
+    endif;
+
     # If /data/local/moodle/bootanimation.zip exists, it overrides the boot animation in /system
     package_extract_file("bootanimation.zip", "/data/local/moodle/bootanimation.zip");
+
 else
+    # Back up /system/media/bootanimation.zip if a backup doesn't exist yet
+    if
+        sha1_check(read_file("/system/media/bootanimation.zip.bak")) == ""
+    then
+        ui_print("Backing up /system/media/bootanimation.zip");
+        rename("/system/media/bootanimation.zip", "/system/media/bootanimation.zip.bak");
+    endif;
+
     package_extract_file("bootanimation.zip", "/system/media/bootanimation.zip");
 endif;
 # Update progress to 60%
