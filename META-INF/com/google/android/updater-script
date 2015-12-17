@@ -60,6 +60,21 @@ endif;
 set_progress(0.4);
 
 
+# Update boot animation
+ui_print("Updating boot animation");
+# Hack to check if /data/local/moodle/bootanimation.zip exists
+if
+    sha1_check(read_file("/data/local/moodle/bootanimation.zip")) != ""
+then
+    # If /data/local/moodle/bootanimation.zip exists, it overrides the boot animation in /system
+    package_extract_file("bootanimation.zip", "/data/local/moodle/bootanimation.zip");
+else
+    package_extract_file("bootanimation.zip", "/system/media/bootanimation.zip");
+endif;
+# Update progress to 60%
+set_progress(0.6);
+
+
 # Update logo based on the device
 ui_print("Updating boot logo");
 if
@@ -86,21 +101,6 @@ else
             abort("ERROR: device mismatch. Logo not updated. Aborting.");
         endif;
     endif;
-endif;
-# Update progress to 60%
-set_progress(0.6);
-
-
-# Update boot animation
-ui_print("Updating boot animation");
-# Hack to check if /data/local/moodle/bootanimation.zip exists
-if
-    sha1_check(read_file("/data/local/moodle/bootanimation.zip")) != ""
-then
-    # If /data/local/moodle/bootanimation.zip exists, it overrides the boot animation in /system
-    package_extract_file("bootanimation.zip", "/data/local/moodle/bootanimation.zip");
-else
-    package_extract_file("bootanimation.zip", "/system/media/bootanimation.zip");
 endif;
 # Update progress to 80%
 set_progress(0.8);
