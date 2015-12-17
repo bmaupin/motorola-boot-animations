@@ -44,6 +44,7 @@ then
     ui_print("Non-stock ROM detected");
     # Back up /system/bin/bootanimation if a backup doesn't exist yet
     if
+        # Hack to check if file exists
         sha1_check(read_file("/system/bin/bootanimation.bak")) == ""
     then
         ui_print("Backing up /system/bin/bootanimation");
@@ -68,33 +69,22 @@ ui_print("ro.cm.device=" + getprop("ro.cm.device"));
 
 # Update boot animation
 if
-    # Hack to check if /data/local/moodle/bootanimation.zip exists
     sha1_check(read_file("/data/local/moodle/bootanimation.zip")) != ""
 then
-    # Back up /data/local/moodle/bootanimation.zip if a backup doesn't exist yet
-    if
-        sha1_check(read_file("/data/local/moodle/bootanimation.zip.bak")) == ""
-    then
-        ui_print("Backing up /data/local/moodle/bootanimation.zip");
-        rename("/data/local/moodle/bootanimation.zip", "/data/local/moodle/bootanimation.zip.bak");
-    endif;
-
-    ui_print("Updating boot animation");
-    # If /data/local/moodle/bootanimation.zip exists, it overrides the boot animation in /system
-    package_extract_file("bootanimation.zip", "/data/local/moodle/bootanimation.zip");
-
-else
-    # Back up /system/media/bootanimation.zip if a backup doesn't exist yet
-    if
-        sha1_check(read_file("/system/media/bootanimation.zip.bak")) == ""
-    then
-        ui_print("Backing up /system/media/bootanimation.zip");
-        rename("/system/media/bootanimation.zip", "/system/media/bootanimation.zip.bak");
-    endif;
-
-    ui_print("Updating boot animation");
-    package_extract_file("bootanimation.zip", "/system/media/bootanimation.zip");
+    rename("/data/local/moodle/bootanimation.zip", "/data/local/moodle/bootanimation.zip.bak");
 endif;
+
+# Back up /system/media/bootanimation.zip if a backup doesn't exist yet
+if
+    sha1_check(read_file("/system/media/bootanimation.zip.bak")) == ""
+then
+    ui_print("Backing up boot animation");
+    rename("/system/media/bootanimation.zip", "/system/media/bootanimation.zip.bak");
+endif;
+
+ui_print("Updating boot animation");
+package_extract_file("bootanimation.zip", "/system/media/bootanimation.zip");
+
 # Update progress to 60%
 set_progress(0.6);
 
