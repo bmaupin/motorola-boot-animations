@@ -67,9 +67,8 @@ ui_print("ro.cm.device=" + getprop("ro.cm.device"));
 
 
 # Update boot animation
-ui_print("Updating boot animation");
-# Hack to check if /data/local/moodle/bootanimation.zip exists
 if
+    # Hack to check if /data/local/moodle/bootanimation.zip exists
     sha1_check(read_file("/data/local/moodle/bootanimation.zip")) != ""
 then
     # Back up /data/local/moodle/bootanimation.zip if a backup doesn't exist yet
@@ -80,6 +79,7 @@ then
         rename("/data/local/moodle/bootanimation.zip", "/data/local/moodle/bootanimation.zip.bak");
     endif;
 
+    ui_print("Updating boot animation");
     # If /data/local/moodle/bootanimation.zip exists, it overrides the boot animation in /system
     package_extract_file("bootanimation.zip", "/data/local/moodle/bootanimation.zip");
 
@@ -92,6 +92,7 @@ else
         rename("/system/media/bootanimation.zip", "/system/media/bootanimation.zip.bak");
     endif;
 
+    ui_print("Updating boot animation");
     package_extract_file("bootanimation.zip", "/system/media/bootanimation.zip");
 endif;
 # Update progress to 60%
