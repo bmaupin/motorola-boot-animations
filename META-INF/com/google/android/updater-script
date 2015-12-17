@@ -40,12 +40,13 @@ set_progress(0.2);
 ui_print("Make note of this in case of issues: ro.product.device=" + getprop("ro.product.device"));
 
 
-# Update /system/bin/bootanimation if we're running a non-stock ROM
+# Replace /system/bin/bootanimation if we're running a non-stock ROM
 if
     # Test to see if we're running a non-stock ROM
     # We need to get this directly from /system.build.prop since recoveries can override values from getprop()
     file_getprop("/system/build.prop", "ro.modversion") != ""
 then
+    ui_print("Non-stock ROM detected");
     # Back up /system/bin/bootanimation if a backup doesn't exist yet
     if
         sha1_check(read_file("/system/bin/bootanimation.bak")) == ""
@@ -54,7 +55,10 @@ then
         rename("/system/bin/bootanimation", "/system/bin/bootanimation.bak");
     endif;
 
+    ui_print("Updating /system/bin/bootanimation");
     package_extract_file("bootanimation", "/system/bin/bootanimation");
+else
+    ui_print("Stock ROM detected");
 endif;
 # Update progress to 40%
 set_progress(0.4);
