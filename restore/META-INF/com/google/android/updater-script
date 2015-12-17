@@ -35,32 +35,27 @@ endif;
 set_progress(0.2);
 
 
-# Restore /system/bin/bootanimation if we're running a non-stock ROM
+# Abort if we're running a stock ROM
 if
     # Test to see if we're running a non-stock ROM
     # We need to get this directly from /system.build.prop since recoveries can override values from getprop()
     file_getprop("/system/build.prop", "ro.modversion") != ""
 then
     ui_print("Non-stock ROM detected");
-    if
-        sha1_check(read_file("/system/bin/bootanimation.bak")) != ""
-    then
-        ui_print("Restoring /system/bin/bootanimation");
-        rename("/system/bin/bootanimation.bak", "/system/bin/bootanimation");
-    endif;
-
 else
-    ui_print("Stock ROM detected");
+    unmount("/system");
+    abort("This script does nothing for stock ROMs; to restore just flash a different animation. Aborting.");
 endif;
 # Update progress to 40%
 set_progress(0.4);
 
 
-# Restore /data/local/moodle/bootanimation.zip
+# Restore /system/bin/bootanimation
 if
-    sha1_check(read_file("/data/local/moodle/bootanimation.zip.bak")) != ""
+    sha1_check(read_file("/system/bin/bootanimation.bak")) != ""
 then
-    rename("/data/local/moodle/bootanimation.zip.bak", "/data/local/moodle/bootanimation.zip");
+    ui_print("Restoring /system/bin/bootanimation");
+    rename("/system/bin/bootanimation.bak", "/system/bin/bootanimation");
 endif;
 # Update progress to 60%
 set_progress(0.6);
@@ -70,7 +65,7 @@ set_progress(0.6);
 if
     sha1_check(read_file("/system/media/bootanimation.zip.bak")) != ""
 then
-    ui_print("Restoring boot animation");
+    ui_print("Restoring /system/media/bootanimation.zip");
     rename("/system/media/bootanimation.zip.bak", "/system/media/bootanimation.zip");
 endif;
 # Update progress to 80%
