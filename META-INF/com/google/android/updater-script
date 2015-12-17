@@ -35,11 +35,6 @@ endif;
 set_progress(0.2);
 
 
-# ro.product.device can be found in /system/build.prop, but for some reason TWRP also puts it in /default.prop with its own value
-#    e.g. osprey instead of osprey_u2
-ui_print("Make note of this in case of issues: ro.product.device=" + getprop("ro.product.device"));
-
-
 # Replace /system/bin/bootanimation if we're running a non-stock ROM
 if
     # Test to see if we're running a non-stock ROM
@@ -62,6 +57,13 @@ else
 endif;
 # Update progress to 40%
 set_progress(0.4);
+
+
+# Just in case...
+ui_print("Make note of these in case of issues:");
+ui_print("ro.product.device=" + getprop("ro.product.device"));
+ui_print("ro.build.product=" + getprop("ro.build.product"));
+ui_print("ro.cm.device=" + getprop("ro.cm.device"));
 
 
 # Update boot animation
