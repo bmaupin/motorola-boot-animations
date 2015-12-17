@@ -23,6 +23,7 @@ fi
 # Zip the boot animations
 for animation in `ls -1 boot-animations`; do
     zip -r $prefix$animation.zip META-INF
+    zip -r $prefix$animation.zip bootanimation
     cd boot-animations/$animation
     zip -r ../../$prefix$animation.zip .
     cd ../..
