@@ -1,0 +1,84 @@
+# Reference: https://source.android.com/devices/tech/ota/inside_packages.html#edify-syntax
+
+
+# Create and show a progress bar that can go up to 100%
+show_progress(1,0);
+
+
+# Mount /system
+if
+    # Moto G 2013
+    is_substring("falcon", getprop("ro.product.device")) || is_substring("falcon", getprop("ro.build.product")) || is_substring("falcon", getprop("ro.cm.device")) ||
+    # Moto G 2013 (twrp-2.8.6.0-xt1032.img)
+    getprop("ro.product.device") == "xt1032" || getprop("ro.build.product") == "xt1032" || getprop("ro.cm.device") == "xt1032" ||
+    # Moto G 2013 LTE
+    is_substring("peregrine", getprop("ro.product.device")) || is_substring("peregrine", getprop("ro.build.product")) || is_substring("peregrine", getprop("ro.cm.device")) ||
+    # Moto G 2014
+    is_substring("titan", getprop("ro.product.device")) || is_substring("titan", getprop("ro.build.product")) || is_substring("titan", getprop("ro.cm.device")) ||
+    # Moto G 2014 LTE
+    is_substring("thea", getprop("ro.product.device")) || is_substring("thea", getprop("ro.build.product")) || is_substring("thea", getprop("ro.cm.device"))
+then
+    # Next line taken from updater-script from Moto G 2013 Android 5.0.2 OTA update
+    mount("ext4", "EMMC", "/dev/block/platform/msm_sdcc.1/by-name/system", "/system", "max_batch_time=0,commit=1,data=ordered,barrier=1,errors=panic,nodelalloc");
+else
+    # Moto G 2015 has a different location in /dev for the system partition
+    if
+        is_substring("osprey", getprop("ro.product.device")) || is_substring("osprey", getprop("ro.build.product")) || is_substring("osprey", getprop("ro.cm.device"))
+    then
+        # Next line taken from updater-script from Moto G 2015 Android 5.1.1 OTA update
+        mount("ext4", "EMMC", "/dev/block/bootdevice/by-name/system", "/system", "max_batch_time=0,commit=1,data=ordered,barrier=1,errors=panic,nodelalloc");
+    else
+        abort("ERROR: device mismatch. Boot animation not updated. Aborting.");
+    endif;
+endif;
+# Update progress to 20%
+set_progress(0.2);
+
+
+# Restore /system/bin/bootanimation if we're running a non-stock ROM
+if
+    # Test to see if we're running a non-stock ROM
+    # We need to get this directly from /system.build.prop since recoveries can override values from getprop()
+    file_getprop("/system/build.prop", "ro.modversion") != ""
+then
+    ui_print("Non-stock ROM detected");
+    if
+        sha1_check(read_file("/system/bin/bootanimation.bak")) != ""
+    then
+        ui_print("Restoring /system/bin/bootanimation");
+        rename("/system/bin/bootanimation.bak", "/system/bin/bootanimation");
+    endif;
+
+else
+    ui_print("Stock ROM detected");
+endif;
+# Update progress to 40%
+set_progress(0.4);
+
+
+# Restore /data/local/moodle/bootanimation.zip
+if
+    sha1_check(read_file("/data/local/moodle/bootanimation.zip.bak")) != ""
+then
+    rename("/data/local/moodle/bootanimation.zip.bak", "/data/local/moodle/bootanimation.zip");
+endif;
+# Update progress to 60%
+set_progress(0.6);
+
+
+# Restore /system/media/bootanimation.zip
+if
+    sha1_check(read_file("/system/media/bootanimation.zip.bak")) != ""
+then
+    ui_print("Restoring boot animation");
+    rename("/system/media/bootanimation.zip.bak", "/system/media/bootanimation.zip");
+endif;
+# Update progress to 80%
+set_progress(0.8);
+
+
+# Unmount /system
+unmount("/system");
+# Update progress to 100%
+set_progress(1);
+ui_print("Done");
