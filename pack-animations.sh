@@ -28,3 +28,10 @@ for animation in `ls -1 boot-animations`; do
     zip -r ../../$prefix$animation.zip .
     cd ../..
 done
+
+# Zip the restore package
+zip -r restore-bootanimation.zip META-INF
+cd restore
+zip -r ../restore-bootanimation.zip META-INF
+cd ..
+
