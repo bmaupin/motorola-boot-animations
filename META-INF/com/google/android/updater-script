@@ -53,6 +53,14 @@ then
 
     ui_print("Updating /system/bin/bootanimation");
     package_extract_file("bootanimation", "/system/bin/bootanimation");
+
+    # Back up /system/media/bootanimation.zip if a backup doesn't exist yet
+    if
+        sha1_check(read_file("/system/media/bootanimation.zip.bak")) == ""
+    then
+        ui_print("Backing up /system/media/bootanimation.zip");
+        rename("/system/media/bootanimation.zip", "/system/media/bootanimation.zip.bak");
+    endif;
 else
     ui_print("Stock ROM detected");
 endif;
@@ -71,20 +79,11 @@ ui_print("ro.cm.device=" + getprop("ro.cm.device"));
 if
     sha1_check(read_file("/data/local/moodle/bootanimation.zip")) != ""
 then
+    # If /data/local/moodle/bootanimation.zip exists, it overrides the boot animation in /system
     rename("/data/local/moodle/bootanimation.zip", "/data/local/moodle/bootanimation.zip.bak");
 endif;
-
-# Back up /system/media/bootanimation.zip if a backup doesn't exist yet
-if
-    sha1_check(read_file("/system/media/bootanimation.zip.bak")) == ""
-then
-    ui_print("Backing up boot animation");
-    rename("/system/media/bootanimation.zip", "/system/media/bootanimation.zip.bak");
-endif;
-
 ui_print("Updating boot animation");
 package_extract_file("bootanimation.zip", "/system/media/bootanimation.zip");
-
 # Update progress to 60%
 set_progress(0.6);
 
