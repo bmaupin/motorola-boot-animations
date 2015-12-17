@@ -7,18 +7,18 @@ show_progress(1,0);
 
 # Mount /system
 if
-    is_substring("falcon", getprop("ro.product.device")) ||
-    is_substring("peregrine", getprop("ro.product.device")) ||
-    is_substring("titan", getprop("ro.product.device")) ||
-    is_substring("thea", getprop("ro.product.device")) ||
-    getprop("ro.product.device") == "xt1032"
+    is_substring("falcon", getprop("ro.product.device")) || is_substring("falcon", getprop("ro.build.product")) || is_substring("falcon", getprop("ro.cm.device")) ||
+    is_substring("peregrine", getprop("ro.product.device")) || is_substring("peregrine", getprop("ro.build.product")) || is_substring("peregrine", getprop("ro.cm.device")) ||
+    is_substring("titan", getprop("ro.product.device")) || is_substring("titan", getprop("ro.build.product")) || is_substring("titan", getprop("ro.cm.device")) ||
+    is_substring("thea", getprop("ro.product.device")) || is_substring("thea", getprop("ro.build.product")) || is_substring("thea", getprop("ro.cm.device")) ||
+    getprop("ro.product.device") == "xt1032" || getprop("ro.build.product") == "xt1032" || getprop("ro.cm.device") == "xt1032"
 then
     # Next line taken from updater-script from Moto G 2013 Android 5.0.2 OTA update
     mount("ext4", "EMMC", "/dev/block/platform/msm_sdcc.1/by-name/system", "/system", "max_batch_time=0,commit=1,data=ordered,barrier=1,errors=panic,nodelalloc");
 else
     # Moto G 2015 has a different location in /dev for the system partition
     if
-        is_substring("osprey", getprop("ro.product.device"))
+        is_substring("osprey", getprop("ro.product.device")) || is_substring("osprey", getprop("ro.build.product")) || is_substring("osprey", getprop("ro.cm.device"))
     then
         # Next line taken from updater-script from Moto G 2015 Android 5.1.1 OTA update
         mount("ext4", "EMMC", "/dev/block/bootdevice/by-name/system", "/system", "max_batch_time=0,commit=1,data=ordered,barrier=1,errors=panic,nodelalloc");
@@ -48,7 +48,7 @@ then
         ui_print("Backing up /system/bin/bootanimation");
         rename("/system/bin/bootanimation", "/system/bin/bootanimation.bak");
     endif;
-    
+
     package_extract_file("bootanimation", "/system/bin/bootanimation");
 endif;
 # Update progress to 40%
@@ -59,25 +59,25 @@ set_progress(0.4);
 ui_print("Updating boot logo");
 if
     # Moto G 2013
-    is_substring("falcon", getprop("ro.product.device")) ||
+    is_substring("falcon", getprop("ro.product.device")) || is_substring("falcon", getprop("ro.build.product")) || is_substring("falcon", getprop("ro.cm.device")) ||
     # Moto G 2013 (twrp-2.8.6.0-xt1032.img)
-    getprop("ro.product.device") == "xt1032" ||
+    getprop("ro.product.device") == "xt1032" || getprop("ro.build.product") == "xt1032" || getprop("ro.cm.device") == "xt1032" ||
     # Moto G 2013 LTE
-    is_substring("peregrine", getprop("ro.product.device"))
+    is_substring("peregrine", getprop("ro.product.device")) || is_substring("peregrine", getprop("ro.build.product")) || is_substring("peregrine", getprop("ro.cm.device"))
 then
     package_extract_file("logo/moto-g-2013/logo.bin", "/dev/block/platform/msm_sdcc.1/by-name/logo");
 else
     if
         # Moto G 2014
-        is_substring("titan", getprop("ro.product.device")) ||
+        is_substring("titan", getprop("ro.product.device")) || is_substring("titan", getprop("ro.build.product")) || is_substring("titan", getprop("ro.cm.device")) ||
         # Moto G 2014 LTE
-        is_substring("thea", getprop("ro.product.device"))
+        is_substring("thea", getprop("ro.product.device")) || is_substring("thea", getprop("ro.build.product")) || is_substring("thea", getprop("ro.cm.device"))
     then
         package_extract_file("logo/moto-g-2014/logo.bin", "/dev/block/platform/msm_sdcc.1/by-name/logo");
     else
         if
             # Moto G 2015
-            is_substring("osprey", getprop("ro.product.device"))
+            is_substring("osprey", getprop("ro.product.device")) || is_substring("osprey", getprop("ro.build.product")) || is_substring("osprey", getprop("ro.cm.device"))
         then
             package_extract_file("logo/moto-g-2015/logo.bin", "/dev/block/bootdevice/by-name/logo");
         else
