@@ -41,7 +41,14 @@ if
     # We need to get this directly from /system.build.prop since recoveries can override values from getprop()
     file_getprop("/system/build.prop", "ro.modversion") != ""
 then
-    rename("/system/bin/bootanimation", "/system/bin/bootanimation.bak");
+    # Back up /system/bin/bootanimation if a backup doesn't exist yet
+    if
+        sha1_check(read_file("/system/bin/bootanimation.bak")) == ""
+    then
+        ui_print("Backing up /system/bin/bootanimation");
+        rename("/system/bin/bootanimation", "/system/bin/bootanimation.bak");
+    endif;
+    
     package_extract_file("bootanimation", "/system/bin/bootanimation");
 endif;
 # Update progress to 40%
