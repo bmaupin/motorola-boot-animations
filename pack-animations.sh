@@ -1,9 +1,11 @@
 #!/bin/bash
 
 prefix=bootanimation-
+restore_package=nonstock-rom-restore
 
 # Cleanup
 rm -f $prefix*.zip
+rm $restore_package.zip
 
 # Check for logo files > 4 MiB (The logo partition on Moto G devices is exactly 4 MiB)
 error=false
@@ -30,8 +32,7 @@ for animation in `ls -1 boot-animations`; do
 done
 
 # Zip the restore package
-zip -r restore-bootanimation.zip META-INF
+zip -r $restore_package.zip META-INF
 cd restore
-zip -r ../restore-bootanimation.zip META-INF
+zip -r ../$restore_package.zip META-INF
 cd ..
-
