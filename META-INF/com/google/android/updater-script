@@ -48,7 +48,7 @@ then
         sha1_check(read_file("/system/bin/bootanimation.bak")) == ""
     then
         ui_print("Backing up /system/bin/bootanimation");
-        rename("/system/bin/bootanimation", "/system/bin/bootanimation.bak");
+        run_program("/sbin/cp", "-p", "/system/bin/bootanimation", "/system/bin/bootanimation.bak");
     endif;
 
     ui_print("Updating /system/bin/bootanimation");
@@ -59,7 +59,7 @@ then
         sha1_check(read_file("/system/media/bootanimation.zip.bak")) == ""
     then
         ui_print("Backing up /system/media/bootanimation.zip");
-        rename("/system/media/bootanimation.zip", "/system/media/bootanimation.zip.bak");
+        run_program("/sbin/cp", "-p", "/system/media/bootanimation.zip", "/system/media/bootanimation.zip.bak");
     endif;
 else
     ui_print("Stock ROM detected");
