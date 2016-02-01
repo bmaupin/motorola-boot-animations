@@ -7,6 +7,7 @@ All official Motorola Android boot animations for the Moto G
 - Should be compatible with all versions of the Moto G, including LTE versions (see below for compatibility)
 - Carrier branding removed
 - Warning message removed for phones with unlocked bootloaders
+- Unlocked boot loader required for installation (root not required)
 
 #### Installation
 See: [Installation](https://github.com/bmaupin/motorola-boot-animations/wiki/Installation)
