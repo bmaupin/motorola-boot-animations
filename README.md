@@ -24,7 +24,7 @@ Moto G 2015 US GSM |  XT1540 | osprey_u2 | works
   [![aprilfool](http://img.youtube.com/vi/f6oEzvaesLA/0.jpg)](http://www.youtube.com/watch?v=f6oEzvaesLA)
   - Article from Motorola's blog: [The Download: Behind the Scenes of Our April Fools’ Animation](http://motorola-blog.blogspot.ca/2014/04/the-download-behind-scenes-of-our-april.html)
 - Autumn  
-  [![autumn](http://img.youtube.com/vi/QGeZJ5XV0pM/0.jpg)](http://www.youtube.com/watch?v=QGeZJ5XV0pM)
+  [![autumn](http://img.youtube.com/vi/zd2Ii4G72Gk/0.jpg)](https://www.youtube.com/watch?v=zd2Ii4G72Gk&t=0m9s)
 - Globe  
   [![globe](http://img.youtube.com/vi/S27qEyvwIJw/0.jpg)](http://www.youtube.com/watch?v=S27qEyvwIJw)
 - Spring  
