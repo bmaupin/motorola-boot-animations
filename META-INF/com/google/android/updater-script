@@ -31,41 +31,47 @@ else
         abort("ERROR: device mismatch. Boot animation not updated. Aborting.");
     endif;
 endif;
-# Update progress to 20%
-set_progress(0.2);
 
 
-# Replace /system/bin/bootanimation if we're running a non-stock ROM
+# Update progress to 25%
+set_progress(0.25);
+
+
+# Update boot animation
 if
     # Test to see if we're running a non-stock ROM
     # We need to get this directly from /system.build.prop since recoveries can override values from getprop()
     file_getprop("/system/build.prop", "ro.modversion") != ""
 then
     ui_print("Non-stock ROM detected");
-    # Back up /system/bin/bootanimation if a backup doesn't exist yet
+    ui_print("Updating boot animation");
+    # First try copying to /data/system/theme, if it exists, since that's better than writing to /system
     if
-        # Hack to check if file exists
-        sha1_check(read_file("/system/bin/bootanimation.bak")) == ""
+        package_extract_file("bootanimation.zip", "/data/system/theme/bootanimation.zip")
     then
-        ui_print("Backing up /system/bin/bootanimation");
-        run_program("/sbin/cp", "-p", "/system/bin/bootanimation", "/system/bin/bootanimation.bak");
-    endif;
+        set_metadata("/data/system/theme/bootanimation.zip", "mode", 0644);
 
-    ui_print("Updating /system/bin/bootanimation");
-    package_extract_file("bootanimation", "/system/bin/bootanimation");
+    # If that doesn't work, overwrite /system/media/bootanimation.zip
+    else
+        # Back up /system/media/bootanimation.zip if a backup doesn't exist yet
+        if
+            # Hack to check if file exists
+            sha1_check(read_file("/system/media/bootanimation.zip.bak")) == ""
+        then
+            ui_print("Backing up /system/media/bootanimation.zip");
+            run_program("/sbin/cp", "-p", "/system/media/bootanimation.zip", "/system/media/bootanimation.zip.bak");
+        endif;
 
-    # Back up /system/media/bootanimation.zip if a backup doesn't exist yet
-    if
-        sha1_check(read_file("/system/media/bootanimation.zip.bak")) == ""
-    then
-        ui_print("Backing up /system/media/bootanimation.zip");
-        run_program("/sbin/cp", "-p", "/system/media/bootanimation.zip", "/system/media/bootanimation.zip.bak");
+        package_extract_file("bootanimation.zip", "/system/media/bootanimation.zip");
+        set_metadata("/system/media/bootanimation.zip", "mode", 0644);
     endif;
 else
-    ui_print("Stock ROM detected");
+    abort("This script does nothing for stock ROMs. Aborting.");
 endif;
-# Update progress to 40%
-set_progress(0.4);
+
+
+# Update progress to 50%
+set_progress(0.5);
 
 
 # Just in case...
@@ -73,19 +79,6 @@ ui_print("Make note of these in case of issues:");
 ui_print("ro.product.device=" + getprop("ro.product.device"));
 ui_print("ro.build.product=" + getprop("ro.build.product"));
 ui_print("ro.cm.device=" + getprop("ro.cm.device"));
-
-
-# Update boot animation
-if
-    sha1_check(read_file("/data/local/moodle/bootanimation.zip")) != ""
-then
-    # If /data/local/moodle/bootanimation.zip exists, it overrides the boot animation in /system
-    rename("/data/local/moodle/bootanimation.zip", "/data/local/moodle/bootanimation.zip.bak");
-endif;
-ui_print("Updating boot animation");
-package_extract_file("bootanimation.zip", "/system/media/bootanimation.zip");
-# Update progress to 60%
-set_progress(0.6);
 
 
 # Update logo based on the device
@@ -115,12 +108,16 @@ else
         endif;
     endif;
 endif;
-# Update progress to 80%
-set_progress(0.8);
+
+
+# Update progress to 75%
+set_progress(0.75);
 
 
 # Unmount /system
 unmount("/system");
+
+
 # Update progress to 100%
 set_progress(1);
 ui_print("Done");
