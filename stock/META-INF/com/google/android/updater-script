@@ -48,7 +48,7 @@ set_progress(0.25);
 if
     # Test to see if we're running a non-stock ROM
     # We need to get this directly from /system.build.prop since recoveries can override values from getprop()
-    file_getprop("/system/build.prop", "ro.modversion") != ""
+    file_getprop("/system/build.prop", "ro.modversion") == ""
 then
     ui_print("Stock ROM detected");
     ui_print("Updating boot animation");
