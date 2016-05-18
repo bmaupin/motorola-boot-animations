@@ -24,9 +24,11 @@ fi
 
 # Zip the boot animations for stock ROMs
 for animation in `ls -1 common/boot-animations`; do
-    zip -r $stock_prefix$animation.zip common/META-INF
-    zip -r $stock_prefix$animation.zip stock/META-INF
-    cd common/boot-animations/$animation
+    cd common
+    zip -r ../$stock_prefix$animation.zip META-INF
+    cd ../stock
+    zip -r ../$stock_prefix$animation.zip META-INF
+    cd ../common/boot-animations/$animation
     zip -r ../../../$stock_prefix$animation.zip .
     cd ../../..
 done
@@ -69,9 +71,11 @@ c 0 0 part1
     zip ../$nonstock_prefix$animation.zip bootanimation.zip
     cd ..
     rm -rf tmp
-    zip -r $nonstock_prefix$animation.zip common/META-INF
-    zip -r $nonstock_prefix$animation.zip nonstock/META-INF
-    cd common/boot-animations/$animation
+    cd common
+    zip -r ../$nonstock_prefix$animation.zip META-INF
+    cd ../nonstock
+    zip -r ../$nonstock_prefix$animation.zip META-INF
+    cd ../common/boot-animations/$animation
     zip -r ../../../$nonstock_prefix$animation.zip logo *.png
     cd ../../..
 done

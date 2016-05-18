@@ -5,6 +5,13 @@
 show_progress(1,0);
 
 
+# Just in case...
+ui_print("Make note of these in case of issues:");
+ui_print("ro.product.device=" + getprop("ro.product.device"));
+ui_print("ro.build.product=" + getprop("ro.build.product"));
+ui_print("ro.cm.device=" + getprop("ro.cm.device"));
+
+
 # Mount /system
 if
     # Moto G 2013
@@ -28,7 +35,7 @@ else
         # Next line taken from updater-script from Moto G 2015 Android 5.1.1 OTA update
         mount("ext4", "EMMC", "/dev/block/bootdevice/by-name/system", "/system", "max_batch_time=0,commit=1,data=ordered,barrier=1,errors=panic,nodelalloc");
     else
-        abort("ERROR: device mismatch. Boot animation not updated. Aborting.");
+        abort("ERROR: Device mismatch. Boot animation not updated. Aborting.");
     endif;
 endif;
 
@@ -43,7 +50,7 @@ if
     # We need to get this directly from /system.build.prop since recoveries can override values from getprop()
     file_getprop("/system/build.prop", "ro.modversion") != ""
 then
-    ui_print("Non-stock ROM detected");
+    ui_print("Custom ROM detected");
     ui_print("Updating boot animation");
     # First try copying to /data/system/theme, if it exists, since that's better than writing to /system
     if
@@ -66,19 +73,13 @@ then
         set_metadata("/system/media/bootanimation.zip", "mode", 0644);
     endif;
 else
-    abort("This script does nothing for stock ROMs. Aborting.");
+    ui_print("Stock ROM detected");
+    abort("ERROR: This package is only for custom ROMs. Please use a package for stock ROMs. Aborting.");
 endif;
 
 
 # Update progress to 50%
 set_progress(0.5);
-
-
-# Just in case...
-ui_print("Make note of these in case of issues:");
-ui_print("ro.product.device=" + getprop("ro.product.device"));
-ui_print("ro.build.product=" + getprop("ro.build.product"));
-ui_print("ro.cm.device=" + getprop("ro.cm.device"));
 
 
 # Update logo based on the device
@@ -104,7 +105,7 @@ else
         then
             package_extract_file("logo/moto-g-2015/logo.bin", "/dev/block/bootdevice/by-name/logo");
         else
-            abort("ERROR: device mismatch. Logo not updated. Aborting.");
+            abort("ERROR: Device mismatch. Logo not updated. Aborting.");
         endif;
     endif;
 endif;
