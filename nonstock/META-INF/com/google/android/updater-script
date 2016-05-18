@@ -1,0 +1,123 @@
+# Reference: https://source.android.com/devices/tech/ota/inside_packages.html#edify-syntax
+
+
+# Create and show a progress bar that can go up to 100%
+show_progress(1,0);
+
+
+# Mount /system
+if
+    # Moto G 2013
+    is_substring("falcon", getprop("ro.product.device")) || is_substring("falcon", getprop("ro.build.product")) || is_substring("falcon", getprop("ro.cm.device")) ||
+    # Moto G 2013 (twrp-2.8.6.0-xt1032.img)
+    getprop("ro.product.device") == "xt1032" || getprop("ro.build.product") == "xt1032" || getprop("ro.cm.device") == "xt1032" ||
+    # Moto G 2013 LTE
+    is_substring("peregrine", getprop("ro.product.device")) || is_substring("peregrine", getprop("ro.build.product")) || is_substring("peregrine", getprop("ro.cm.device")) ||
+    # Moto G 2014
+    is_substring("titan", getprop("ro.product.device")) || is_substring("titan", getprop("ro.build.product")) || is_substring("titan", getprop("ro.cm.device")) ||
+    # Moto G 2014 LTE
+    is_substring("thea", getprop("ro.product.device")) || is_substring("thea", getprop("ro.build.product")) || is_substring("thea", getprop("ro.cm.device"))
+then
+    # Next line taken from updater-script from Moto G 2013 Android 5.0.2 OTA update
+    mount("ext4", "EMMC", "/dev/block/platform/msm_sdcc.1/by-name/system", "/system", "max_batch_time=0,commit=1,data=ordered,barrier=1,errors=panic,nodelalloc");
+else
+    # Moto G 2015 has a different location in /dev for the system partition
+    if
+        is_substring("osprey", getprop("ro.product.device")) || is_substring("osprey", getprop("ro.build.product")) || is_substring("osprey", getprop("ro.cm.device"))
+    then
+        # Next line taken from updater-script from Moto G 2015 Android 5.1.1 OTA update
+        mount("ext4", "EMMC", "/dev/block/bootdevice/by-name/system", "/system", "max_batch_time=0,commit=1,data=ordered,barrier=1,errors=panic,nodelalloc");
+    else
+        abort("ERROR: device mismatch. Boot animation not updated. Aborting.");
+    endif;
+endif;
+
+
+# Update progress to 25%
+set_progress(0.25);
+
+
+# Update boot animation
+if
+    # Test to see if we're running a non-stock ROM
+    # We need to get this directly from /system.build.prop since recoveries can override values from getprop()
+    file_getprop("/system/build.prop", "ro.modversion") != ""
+then
+    ui_print("Non-stock ROM detected");
+    ui_print("Updating boot animation");
+    # First try copying to /data/system/theme, if it exists, since that's better than writing to /system
+    if
+        package_extract_file("bootanimation.zip", "/data/system/theme/bootanimation.zip")
+    then
+        set_metadata("/data/system/theme/bootanimation.zip", "mode", 0644);
+
+    # If that doesn't work, overwrite /system/media/bootanimation.zip
+    else
+        # Back up /system/media/bootanimation.zip if a backup doesn't exist yet
+        if
+            # Hack to check if file exists
+            sha1_check(read_file("/system/media/bootanimation.zip.bak")) == ""
+        then
+            ui_print("Backing up /system/media/bootanimation.zip");
+            run_program("/sbin/cp", "-p", "/system/media/bootanimation.zip", "/system/media/bootanimation.zip.bak");
+        endif;
+
+        package_extract_file("bootanimation.zip", "/system/media/bootanimation.zip");
+        set_metadata("/system/media/bootanimation.zip", "mode", 0644);
+    endif;
+else
+    abort("This script does nothing for stock ROMs. Aborting.");
+endif;
+
+
+# Update progress to 50%
+set_progress(0.5);
+
+
+# Just in case...
+ui_print("Make note of these in case of issues:");
+ui_print("ro.product.device=" + getprop("ro.product.device"));
+ui_print("ro.build.product=" + getprop("ro.build.product"));
+ui_print("ro.cm.device=" + getprop("ro.cm.device"));
+
+
+# Update logo based on the device
+ui_print("Updating boot logo");
+if
+    # Moto G 2013
+    is_substring("falcon", getprop("ro.product.device")) || is_substring("falcon", getprop("ro.build.product")) || is_substring("falcon", getprop("ro.cm.device")) ||
+    getprop("ro.product.device") == "xt1032" || getprop("ro.build.product") == "xt1032" || getprop("ro.cm.device") == "xt1032" ||
+    is_substring("peregrine", getprop("ro.product.device")) || is_substring("peregrine", getprop("ro.build.product")) || is_substring("peregrine", getprop("ro.cm.device"))
+then
+    package_extract_file("logo/moto-g-2013/logo.bin", "/dev/block/platform/msm_sdcc.1/by-name/logo");
+else
+    if
+        # Moto G 2014
+        is_substring("titan", getprop("ro.product.device")) || is_substring("titan", getprop("ro.build.product")) || is_substring("titan", getprop("ro.cm.device")) ||
+        is_substring("thea", getprop("ro.product.device")) || is_substring("thea", getprop("ro.build.product")) || is_substring("thea", getprop("ro.cm.device"))
+    then
+        package_extract_file("logo/moto-g-2014/logo.bin", "/dev/block/platform/msm_sdcc.1/by-name/logo");
+    else
+        if
+            # Moto G 2015
+            is_substring("osprey", getprop("ro.product.device")) || is_substring("osprey", getprop("ro.build.product")) || is_substring("osprey", getprop("ro.cm.device"))
+        then
+            package_extract_file("logo/moto-g-2015/logo.bin", "/dev/block/bootdevice/by-name/logo");
+        else
+            abort("ERROR: device mismatch. Logo not updated. Aborting.");
+        endif;
+    endif;
+endif;
+
+
+# Update progress to 75%
+set_progress(0.75);
+
+
+# Unmount /system
+unmount("/system");
+
+
+# Update progress to 100%
+set_progress(1);
+ui_print("Done");
