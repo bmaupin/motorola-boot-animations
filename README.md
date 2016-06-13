@@ -1,4 +1,5 @@
-# motorola-boot-animations
+[![Github All Releases](https://img.shields.io/github/downloads/bmaupin/motorola-boot-animations/total.svg)](http://www.somsubhra.com/github-release-stats/?username=bmaupin&repository=motorola-boot-animations)
+
 All official Motorola Android boot animations for the Moto G
 
 #### Features
