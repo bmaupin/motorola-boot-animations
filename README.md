@@ -25,8 +25,8 @@ Moto G 2015 Latin America dual SIM | XT1543 | stock |  | works
 
 #### Animations
 - April Fools'  
-  [![aprilfool](http://img.youtube.com/vi/f6oEzvaesLA/0.jpg)](http://www.youtube.com/watch?v=f6oEzvaesLA)
-  - Article from Motorola's blog: [The Download: Behind the Scenes of Our April Fools’ Animation](http://motorola-blog.blogspot.ca/2014/04/the-download-behind-scenes-of-our-april.html)
+  [![aprilfool](http://img.youtube.com/vi/f6oEzvaesLA/0.jpg)](http://www.youtube.com/watch?v=f6oEzvaesLA)  
+  [The Download: Behind the Scenes of Our April Fools’ Animation](http://blog.moto.com/2014/04/02/the-download-behind-the-scenes-of-our-april-fools-animation/)
 - Autumn  
   [![autumn](http://img.youtube.com/vi/zd2Ii4G72Gk/0.jpg)](https://www.youtube.com/watch?v=zd2Ii4G72Gk&t=0m9s)
 - Dots  
@@ -36,9 +36,10 @@ Moto G 2015 Latin America dual SIM | XT1543 | stock |  | works
 - Spring  
   [![spring](http://img.youtube.com/vi/8v_FKgfNkOE/0.jpg)](http://www.youtube.com/watch?v=8v_FKgfNkOE)
 - Stitch  
-  [![stitch](http://img.youtube.com/vi/EXU7CHEDR_A/0.jpg)](http://www.youtube.com/watch?v=EXU7CHEDR_A)
-  - Article from Motorola's blog:  [Start Up with ‘Stitch’: The Making of Motorola’s New Bootanimation](http://motorola-blog.blogspot.ca/2015/11/start-up-with-stitch-making-of.html)
+  [![stitch](http://img.youtube.com/vi/EORYUCWKIlM/0.jpg)](https://www.youtube.com/watch?v=EORYUCWKIlM)  
+  [Start Up with ‘Stitch’: The Making of Motorola’s New Bootanimation](http://blog.moto.com/2015/11/14/start-up-with-stitch-the-making-of-motorolas-new-bootanimation/)
 - Winter  
   [![winter](http://img.youtube.com/vi/EytWogsGXDw/0.jpg)](http://www.youtube.com/watch?v=EytWogsGXDw)
 - World Cup  
-  [![worldcup](http://img.youtube.com/vi/NCHJKIjiLV8/0.jpg)](http://www.youtube.com/watch?v=NCHJKIjiLV8)
+  [![worldcup](http://img.youtube.com/vi/34_jF-kwklc/0.jpg)](https://www.youtube.com/watch?v=34_jF-kwklc)  
+  [The Download: GOAL! Behind the Scenes of Our New Soccer Startup Animation](http://blog.moto.com/2014/06/19/the-download-goal-behind-the-scenes-of-our-new-soccer-startup-animation/)
