@@ -33,6 +33,8 @@ Moto G 2015 Latin America dual SIM | XT1543 | stock |  | works
   [![dots](http://img.youtube.com/vi/FPEpDFu-ZrI/0.jpg)](https://www.youtube.com/watch?v=FPEpDFu-ZrI&t=0m5s)
 - Globe  
   [![globe](http://img.youtube.com/vi/S27qEyvwIJw/0.jpg)](http://www.youtube.com/watch?v=S27qEyvwIJw)
+- Hello Moto (with audio on stock ROMs)  
+  [![hellomoto](http://img.youtube.com/vi/IoY_JTbwrRU/0.jpg)](https://www.youtube.com/watch?v=IoY_JTbwrRU)
 - Spring  
   [![spring](http://img.youtube.com/vi/8v_FKgfNkOE/0.jpg)](http://www.youtube.com/watch?v=8v_FKgfNkOE)
 - Stitch  
