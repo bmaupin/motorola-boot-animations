@@ -11,7 +11,7 @@ All official Motorola Android boot animations for the Moto G
 - Unlocked boot loader required for installation (root not required)
 
 #### Installation
-See: [Installation](https://github.com/bmaupin/motorola-boot-animations/wiki/Installation)
+See: [Installation](wiki/installation.md)
 
 #### Compatibility
 These boot animations should work with any model of the Moto G released before 2016. Here's what's been tested so far:

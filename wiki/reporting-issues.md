@@ -1,3 +1,6 @@
+Reporting issues
+---
+
 1. Go here and create a new issue:  
   https://github.com/bmaupin/motorola-boot-animations/issues
 
