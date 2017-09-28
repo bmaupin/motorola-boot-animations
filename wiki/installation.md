@@ -1,3 +1,6 @@
+Installation
+---
+
 1. Unlock bootloader (if it hasn't been unlocked yet)  
   Note: this only needs to be done one time for each phone
   1. Enable developer options  
@@ -86,7 +89,7 @@
   5. Check the log at the top for any errors
   6. Tap _Reboot System_
 
-7. If you run into problems *after* flashing the boot animation, report them here: [Reporting issues](https://github.com/bmaupin/motorola-boot-animations/wiki/Reporting-issues)
+7. If you run into problems *after* flashing the boot animation, report them here: [Reporting issues](reporting-issues.md)
 
 
 Manual installation
