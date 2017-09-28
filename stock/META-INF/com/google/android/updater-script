@@ -5,39 +5,9 @@
 show_progress(1,0);
 
 
-# Just in case...
-ui_print("Make note of these in case of issues:");
-ui_print("ro.product.device=" + getprop("ro.product.device"));
-ui_print("ro.build.product=" + getprop("ro.build.product"));
-ui_print("ro.cm.device=" + getprop("ro.cm.device"));
-
-
-# Mount /system
-if
-    # Moto G 2013
-    is_substring("falcon", getprop("ro.product.device")) || is_substring("falcon", getprop("ro.build.product")) || is_substring("falcon", getprop("ro.cm.device")) ||
-    # Moto G 2013 (twrp-2.8.6.0-xt1032.img)
-    getprop("ro.product.device") == "xt1032" || getprop("ro.build.product") == "xt1032" || getprop("ro.cm.device") == "xt1032" ||
-    # Moto G 2013 LTE
-    is_substring("peregrine", getprop("ro.product.device")) || is_substring("peregrine", getprop("ro.build.product")) || is_substring("peregrine", getprop("ro.cm.device")) ||
-    # Moto G 2014
-    is_substring("titan", getprop("ro.product.device")) || is_substring("titan", getprop("ro.build.product")) || is_substring("titan", getprop("ro.cm.device")) ||
-    # Moto G 2014 LTE
-    is_substring("thea", getprop("ro.product.device")) || is_substring("thea", getprop("ro.build.product")) || is_substring("thea", getprop("ro.cm.device"))
-then
-    # Next line taken from updater-script from Moto G 2013 Android 5.0.2 OTA update
-    mount("ext4", "EMMC", "/dev/block/platform/msm_sdcc.1/by-name/system", "/system", "max_batch_time=0,commit=1,data=ordered,barrier=1,errors=panic,nodelalloc");
-else
-    # Moto G 2015 has a different location in /dev for the system partition
-    if
-        is_substring("osprey", getprop("ro.product.device")) || is_substring("osprey", getprop("ro.build.product")) || is_substring("osprey", getprop("ro.cm.device"))
-    then
-        # Next line taken from updater-script from Moto G 2015 Android 5.1.1 OTA update
-        mount("ext4", "EMMC", "/dev/block/bootdevice/by-name/system", "/system", "max_batch_time=0,commit=1,data=ordered,barrier=1,errors=panic,nodelalloc");
-    else
-        abort("ERROR: Device mismatch. Boot animation not updated. Aborting.");
-    endif;
-endif;
+ui_print("Mounting /system");
+# Next line taken from updater-script from Moto G 2015 Android 5.1.1 OTA update
+mount("ext4", "EMMC", "/dev/block/bootdevice/by-name/system", "/system", "max_batch_time=0,commit=1,data=ordered,barrier=1,errors=panic,nodelalloc");
 
 
 # Update progress to 25%
@@ -46,14 +16,14 @@ set_progress(0.25);
 
 # Update boot animation
 if
-    # Test to see if we're running a non-stock ROM
+    # Test to see if we're running a stock ROM
     # We need to get this directly from /system.build.prop since recoveries can override values from getprop()
     file_getprop("/system/build.prop", "ro.modversion") == ""
 then
     ui_print("Stock ROM detected");
     ui_print("Updating boot animation");
     run_program("/sbin/mkdir", "-p", "/data/local/moodle");
-    # Always put bootanimation in /data/local since /system/bin/bootanimation will check there first and it won't break OTA updates
+    # Always put bootanimation.zip in /data/local since /system/bin/bootanimation will check there first and it won't break OTA updates
     package_extract_file("bootanimation.zip", "/data/local/moodle/bootanimation.zip");
     set_metadata_recursive("/data/local/moodle", "uid", 1003, "gid", 9004, "fmode", 0660, "dmode", 0770, "selabel", "u:object_r:moodle_data_file:s0");
 else
@@ -89,7 +59,10 @@ else
         then
             package_extract_file("logo/moto-g-2015/logo.bin", "/dev/block/bootdevice/by-name/logo");
         else
-            abort("ERROR: Device mismatch. Logo not updated. Aborting.");
+            ui_print("WARNING: Unsupported device. Logo not updated.");
+            ui_print("ro.product.device=" + getprop("ro.product.device"));
+            ui_print("ro.build.product=" + getprop("ro.build.product"));
+            ui_print("ro.cm.device=" + getprop("ro.cm.device"));
         endif;
     endif;
 endif;
@@ -99,8 +72,8 @@ endif;
 set_progress(0.75);
 
 
-# Unmount /system
-unmount("/system");
+ui_print("Unmounting /system");
+ifelse(is_mounted("/system") == "/system", unmount("/system"));
 
 
 # Update progress to 100%
