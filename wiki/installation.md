@@ -2,92 +2,92 @@ Installation
 ---
 
 1. Unlock bootloader (if it hasn't been unlocked yet)  
-  Note: this only needs to be done one time for each phone
-  1. Enable developer options  
-    _Settings_ → _About phone_ → tap _Build number_ 7 times. You should see the message: "You are now a developer!"
+    Note: this only needs to be done one time for each phone
+    1. Enable developer options  
+        _Settings_ > _About phone_ > tap _Build number_ 7 times. You should see the message: "You are now a developer!"
 
-  2. Enable OEM unlock  
-    _Settings_ → _Developer options_ → check _Enable OEM unlock_
+    2. Enable OEM unlock
+        _Settings_ > _Developer options_ > check _Enable OEM unlock_
 
-  3. Follow instructions here:  
-    https://motorola-global-portal.custhelp.com/app/standalone/bootloader/unlock-your-device-a
+    3. Follow instructions here:  
+        https://motorola-global-portal.custhelp.com/app/standalone/bootloader/unlock-your-device-a
 
 2. Download the desired boot animation  
-  https://github.com/bmaupin/motorola-boot-animations/releases
-  - Download one of the stock ROM packages if you're running a stock ROM (if you're not sure, you're probably running a stock ROM)
-  - Download one of the custom ROM packages if you're running a custom ROM (CyanogenMod, Omni, etc)
+    https://github.com/bmaupin/motorola-boot-animations/releases
+    - Download one of the stock ROM packages if you're running a stock ROM (if you're not sure, you're probably running a stock ROM)
+    - Download one of the custom ROM packages if you're running a custom ROM (CyanogenMod, Omni, etc)
 
 3. Copy the boot animation zip file to the phone (either internal storage or the SD card)
 
 4. Boot to a custom recovery
-  - If you already have a custom recovery installed:
-    1. Boot to fastboot mode  
-      Power off the phone, press and hold volume down button, press power button, hold both for about 5 seconds and then let go
+    - If you already have a custom recovery installed:
+        1. Boot to fastboot mode  
+            Power off the phone, press and hold volume down button, press power button, hold both for about 5 seconds and then let go
 
-    2. Boot to recovery mode  
-      Note: recovery mode may be a little slow to load, just wait a minute or two and it should load
-      - Moto G 2015
-        1. Press volume down until you see _RECOVERY MODE_
-        2. Press the power button
+        2. Boot to recovery mode
+            Note: recovery mode may be a little slow to load, just wait a minute or two and it should load
+            - Moto G 2015
+                1. Press volume down until you see _RECOVERY MODE_
+                2. Press the power button
 
-      - Moto G 2013/2014
-        1. Press volume down and select _Recovery_
-        2. Press the volume up button
+            - Moto G 2013/2014
+                1. Press volume down and select _Recovery_
+                2. Press the volume up button
 
-  - Otherwise:
-    1. Install the Android SDK platform tools
-      - Ubuntu:
+    - Otherwise:
+        1. Install the Android SDK platform tools
+            - Ubuntu:
 
-              sudo apt-get install android-tools-adb
-              sudo apt-get install android-tools-fastboot
+                  sudo apt-get install android-tools-adb
+                  sudo apt-get install android-tools-fastboot
 
-      - OS X:
+            - OS X:
 
-              brew install android-platform-tools
+                  brew install android-platform-tools
 
-      - Windows:  
-        http://forum.xda-developers.com/showthread.php?p=48915118
+            - Windows:  
+                http://forum.xda-developers.com/showthread.php?p=48915118
 
-      - Others:  
-        https://developer.android.com/sdk/index.html#Other
+            - Others:  
+                https://developer.android.com/sdk/index.html#Other
 
-    2. Download a compatible custom recovery for your phone
-      - Moto G 2015  
-        http://forum.xda-developers.com/2015-moto-g/orig-development/twrp-twrp-moto-g-2015-t3170537
+        2. Download a compatible custom recovery for your phone
+            - Moto G 2015  
+                http://forum.xda-developers.com/2015-moto-g/orig-development/twrp-twrp-moto-g-2015-t3170537
 
-      - Moto G 2014  
-        http://forum.xda-developers.com/moto-g-2014/orig-development/recovery-twrp-2-8-2-0-touch-recovery-t2979149
+            - Moto G 2014  
+                http://forum.xda-developers.com/moto-g-2014/orig-development/recovery-twrp-2-8-2-0-touch-recovery-t2979149
 
-      - Moto G 2014 LTE  
-        http://forum.xda-developers.com/moto-g-lte/orig-development/recovery-twrp-2-8-6-0-touch-recovery-t3088800
+            - Moto G 2014 LTE  
+                http://forum.xda-developers.com/moto-g-lte/orig-development/recovery-twrp-2-8-6-0-touch-recovery-t3088800
 
-      - Moto G 2013  
-        http://forum.xda-developers.com/moto-g/development/recovery-twrp-2-8-2-0-touch-recovery-t2980621
+            - Moto G 2013  
+                http://forum.xda-developers.com/moto-g/development/recovery-twrp-2-8-2-0-touch-recovery-t2980621
 
-      - Moto G 2013 LTE  
-        http://forum.xda-developers.com/moto-g/4g-development/collection-somcom3xs-experimental-corner-t2996266
+            - Moto G 2013 LTE  
+                http://forum.xda-developers.com/moto-g/4g-development/collection-somcom3xs-experimental-corner-t2996266
 
-    3. Boot the custom recovery
-      1. Boot to fastboot mode  
-        Power off the phone, press and hold volume down button, press power button, hold both for about 5 seconds and then let go
+        3. Boot the custom recovery
+            1. Boot to fastboot mode  
+                Power off the phone, press and hold volume down button, press power button, hold both for about 5 seconds and then let go
 
-      2. (Optional) Flash the custom recovery  
-        **Warning:** a custom recovery will break OTA updates. You will need to flash the stock recovery first before attempting to install any OTA updates.
-      
-            sudo fastboot flash recovery twrp-2.8.7.0.-falcon_STOCK_NOTHEME.img
+            2. (Optional) Flash the custom recovery  
+                **Warning:** a custom recovery will break OTA updates. You will need to flash the stock recovery first before attempting to install any OTA updates.
+            
+                   sudo fastboot flash recovery twrp-2.8.7.0.-falcon_STOCK_NOTHEME.img
 
-      3. Boot the custom recovery  
-      
-              sudo fastboot boot twrp-2.8.7.0.-falcon_STOCK_NOTHEME.img
+            3. Boot the custom recovery
+            
+                   sudo fastboot boot twrp-2.8.7.0.-falcon_STOCK_NOTHEME.img
 
 6. Flash the boot animation
-  1. Tap _Install_
-  2. At the top tap _Storage_ and change to the storage where you copied the boot animation zip file
-  3. Scroll down and tap the boot animation zip file
-  4. At the bottom swipe to confirm
-  5. The log at the top should show the value of `ro.product.build`. Make note of it in case you have any problems
-  5. Check the log at the top for any errors
-  6. Tap _Reboot System_
+    1. Tap _Install_
+    2. At the top tap _Storage_ and change to the storage where you copied the boot animation zip file
+    3. Scroll down and tap the boot animation zip file
+    4. At the bottom swipe to confirm
+    5. The log at the top should show the value of `ro.product.build`. Make note of it in case you have any problems
+    5. Check the log at the top for any errors
+    6. Tap _Reboot System_
 
 7. If you run into problems *after* flashing the boot animation, report them here: [Reporting issues](reporting-issues.md)
 
@@ -99,52 +99,52 @@ If for some reason you want to install the logo or boot animation manually (for 
 
 #### Install the boot animation
 1. Download the desired boot animation  
-  https://github.com/bmaupin/motorola-boot-animations/releases
+    https://github.com/bmaupin/motorola-boot-animations/releases
 
 2. Extract bootanimation.zip from the file you downloaded
 
 3. Copy the new bootanimation.zip to the phone
 
-        adb push bootanimation.zip /sdcard/
+       adb push bootanimation.zip /sdcard/
 
 4. See if /data/local/moodle/bootanimation.zip exists
 
-        adb shell
-        su
-        ls /data/local/moodle/bootanimation.zip
+       adb shell
+       su
+       ls /data/local/moodle/bootanimation.zip
 
 5. If /data/local/moodle/bootanimation.zip exists:
 
-        adb shell
-        su
-        cp /sdcard/bootanimation.zip /data/local/moodle
+       adb shell
+       su
+       cp /sdcard/bootanimation.zip /data/local/moodle
 
 6. If /data/local/moodle/bootanimation.zip doesn't exist:
-  1. Remount /system as read-write
+    1. Remount /system as read-write
 
-            adb shell
-            su
-            mount -o remount,rw /system
+           adb shell
+           su
+           mount -o remount,rw /system
 
-  2. Put the new bootanimation.zip file in place and set the permissions
+    2. Put the new bootanimation.zip file in place and set the permissions
 
-            cp /sdcard/bootanimation.zip /system/media
-            chmod 644 /system/media/bootanimation.zip
+           cp /sdcard/bootanimation.zip /system/media
+           chmod 644 /system/media/bootanimation.zip
 
-  3. Clean up
+    3. Clean up
 
-            rm /sdcard/bootanimation.zip
-            mount -o remount,ro /system
+           rm /sdcard/bootanimation.zip
+           mount -o remount,ro /system
 
 #### Install the logo (requires an unlocked bootloader)
 1. Download the desired boot animation (the logo is included)  
-  https://github.com/bmaupin/motorola-boot-animations/releases
+    https://github.com/bmaupin/motorola-boot-animations/releases
 
 2. Extract the appropriate logo from the file you downloaded  
-e.g. If you have the Moto G 2014 LTE, extract logo/moto-g-2014/logo.bin
+   e.g. If you have the Moto G 2014 LTE, extract logo/moto-g-2014/logo.bin
 
 3. Boot to fastboot mode (see above)
 
 4. Flash the logo (requires the Android SDK Tools; see above)
 
-        sudo /path/to/android-sdk-linux/platform-tools/fastboot flash logo logo.bin
+       sudo /path/to/android-sdk-linux/platform-tools/fastboot flash logo logo.bin
