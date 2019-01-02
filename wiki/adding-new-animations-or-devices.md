@@ -54,7 +54,7 @@ Add a new device
 3. Get `ro.product.device`
     1. If you have access to the device, it's located in /system/build.prop
     2. Otherwise, you can get it from build.prop in the system partition from a stock ROM
-    3. **Important:** TWRP may overwrite ro.build.prop by putting a different value in /default.prop. To check this:
+    3. **Important:** TWRP may overwrite `ro.product.device` by putting a different value in /default.prop. To check this:
         1. Download the TWRP image for the device
         2. Extract the image  
            http://unix.stackexchange.com/a/65316/14436
