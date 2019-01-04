@@ -1,5 +1,4 @@
-Installation
----
+## Installation
 
 1. Unlock bootloader (if it hasn't been unlocked yet)  
     Note: this only needs to be done one time for each phone
@@ -92,12 +91,12 @@ Installation
 7. If you run into problems *after* flashing the boot animation, report them here: [Reporting issues](reporting-issues.md)
 
 
-Manual installation
----
+## Manual installation
 
 If for some reason you want to install the logo or boot animation manually (for example, if you only want to install one or the other, or you have a locked bootloader), follow these steps:
 
-#### Install the boot animation
+
+#### Install the boot animation (Android 6 and below)
 1. Download the desired boot animation  
     https://github.com/bmaupin/motorola-boot-animations/releases
 
@@ -136,6 +135,51 @@ If for some reason you want to install the logo or boot animation manually (for 
            rm /sdcard/bootanimation.zip
            mount -o remount,ro /system
 
+
+#### Install the boot animation (Android 7 and above)
+1. Download the desired boot animation  
+    https://github.com/bmaupin/motorola-boot-animations/releases
+
+1. Extract bootanimation.zip from the file you downloaded
+
+1. (Optional) Get the size of your phone's OEM partition
+
+    1. Boot your phone into a root shell or TWRP and connect using adb
+
+    1. Run these commands to get the partition size:
+
+        ```
+        # ls -l /dev/block/bootdevice/by-name/oem
+        lrwxrwxrwx    1 root         root                21 Jan  2  1970 /dev/block/bootdevice/by-name/oem -> /dev/block/mmcblk0p51
+        # cat /proc/partitions | grep mmcblk0p51
+        259       19     671744 mmcblk0p51
+        ```
+        In this example, the partition size is 671744.
+
+1. Create a new OEM partition image with the new boot animation
+
+    If desired, change `count=...` to the size of your phone's OEM partition. If not, 16MB (as in the example below) should be plenty.
+
+    ```
+    dd if=/dev/zero of=oem.raw.img.new bs=1024 count=16384
+    mkfs.ext4 oem.raw.img.new
+    sudo mkdir -p /mnt/oem
+    sudo mount oem.raw.img.new /mnt/oem
+    # oem.prop seems to be necessary because build.prop may refer to it
+    sudo touch /mnt/oem/oem.prop
+    sudo mkdir /mnt/oem/media
+    sudo cp /path/to/bootanimation.zip /mnt/oem/media/
+    sudo umount /mnt/oem
+    img2simg oem.raw.img.new oem.img.new
+    ```
+
+1. Boot your phone into fastboot mode and flash the new OEM partition
+
+    ```
+    sudo fastboot flash oem oem.img.new
+    ```
+
+
 #### Install the logo (requires an unlocked bootloader)
 1. Download the desired boot animation (the logo is included)  
     https://github.com/bmaupin/motorola-boot-animations/releases
@@ -147,4 +191,4 @@ If for some reason you want to install the logo or boot animation manually (for 
 
 4. Flash the logo (requires the Android SDK Tools; see above)
 
-       sudo /path/to/android-sdk-linux/platform-tools/fastboot flash logo logo.bin
+       sudo fastboot flash logo logo.bin
