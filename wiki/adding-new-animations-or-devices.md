@@ -1,5 +1,4 @@
-Add a new boot animation
----
+## Add a new boot animation
 
 1. Add the boot animation
     1. Get bootanimation.zip
@@ -35,8 +34,7 @@ Add a new boot animation
     5. Make sure the new logo.bin files are all 4 MiB or less (pack-animations.sh will verify this)
 
 
-Add a new device
----
+## Add a new device
 
 1. Get the /dev mount location for the system partition
     1. If you have access to the device:
@@ -63,3 +61,50 @@ Add a new device
                    mv twrp-osprey-2.8.7-r4.img-ramdisk.gz twrp-osprey-2.8.7-r4.img-ramdisk.lzma
                    xz -d twrp-osprey-2.8.7-r4.img-ramdisk.lzma
                    cpio -idv < twrp-osprey-2.8.7-r4.img-ramdisk
+
+4. Get logo.bin for the device from the device's stock firmware
+
+5. Copy the new device's stock logo.bin
+
+    ```
+    device=moto-e4
+    for folder in common/boot-animations/*; do
+        mkdir -p $folder/logo/$device
+        cp /path/to/logo.bin $folder/logo/$device
+        mlogo $folder/logo/$device/logo.bin replace logo_boot $folder/logo_preview.png
+        mlogo $folder/logo/$device/logo.bin replace logo_unlocked $folder/logo_preview.png
+    done
+    ```
+
+6. Update nonstock/META-INF/com/google/android/updater-script and stock/META-INF/com/google/android/updater-script with the `ro.product.device` of the new device
+
+7. If your device shows a "bad key" message, additionally append an "orange" image in the logo.bin file
+
+    ```
+    device=moto-e4
+    for folder in common/boot-animations/*; do
+        mkdir -p $folder/logo/$device
+        cp /path/to/logo.bin $folder/logo/$device
+        mlogo $folder/logo/$device/logo.bin append orange $folder/logo_preview.png
+    done
+    ```
+
+
+## Troubleshooting
+
+#### Boot animation doesn't change after adding new device
+
+1. Get the bootanimation binary for the device from the stock ROM or from /system/bin/bootanimation
+
+2. See what the supported locations for bootanimation.zip are and adjust the stock updater-script as necessary
+
+    ```
+    strings bootanimation | grep bootanimation.zip
+    /customize/bootanimation.zip
+    /oem/media/bootanimation.zip
+    /system/media/bootanimation.zip
+    ```
+
+    - `/customize` is part of the root filesystem and can't be modified except by modifying boot.img
+    - Writing to `/system/` is no longer supported as of Android 7/N
+        - Even for earlier versions it's not recommended as it will likely cause OTA updates to fail
