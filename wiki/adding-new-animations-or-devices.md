@@ -105,6 +105,8 @@
     /system/media/bootanimation.zip
     ```
 
+    **Note**: if you don't get any results in /system/bin/bootanimation, see if there's a bootanimation library (e.g. /system/lib64/libbootanimation.so) and try that instead
+
     - `/customize` is part of the root filesystem and can't be modified except by modifying boot.img
     - Writing to `/system/` is no longer supported as of Android 7/N
         - Even for earlier versions it's not recommended as it will likely cause OTA updates to fail
