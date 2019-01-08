@@ -21,36 +21,32 @@ if
     file_getprop("/system/build.prop", "ro.modversion") == ""
 then
     ui_print("Stock ROM detected");
-    ui_print("Updating boot animation");
+    # Try to put bootanimation.zip in /data/local if possible since it's less intrusive
+    # Unfortunately support for this was dropped from Motorola's /system/bin/bootanimation in 2017
     if
-        # Moto E4
-        is_substring("perry", getprop("ro.product.device")) || is_substring("perry", getprop("ro.build.product")) || is_substring("perry", getprop("ro.cm.device"))
+        run_program("/sbin/grep", "/data/local/moodle/bootanimation.zip", "/system/bin/bootanimation") == "0"
     then
-        package_extract_file("oem.img", "/tmp/oem.img");
-        run_program("/sbin/mkdir", "-p", "/tmp/oem");
-        run_program("/sbin/mount", "/tmp/oem.img", "/tmp/oem");
-        package_extract_file("bootanimation.zip", "/tmp/oem/media/bootanimation.zip");
-        set_metadata("/tmp/oem/media/bootanimation.zip", "mode", 0644);
-        unmount("/tmp/oem");
-        # assert(write_raw_image("/tmp/oem.img", "oem"));
-        if
-            # None of these work because TWRP doesn't seem to be able to write to the OEM partition
-            # package_extract_file("/tmp/oem.img", "/dev/block/mmcblk0p51")
-            # write_raw_image("/tmp/oem.img", "/dev/block/mmcblk0p51")
-            # write_raw_image(read_file("/tmp/oem.img"), "/dev/block/mmcblk0p51")
-            # write_raw_image(read_file("/tmp/oem.img"), "/dev/block/bootdevice/by-name/oem")
-            # write_raw_image("/tmp/oem.img", "oem")
-            write_raw_image(read_file("/tmp/oem.img"), "oem")
-        then
-            ui_print("success");
-        else
-            abort("fail");
-        endif;
-    else
+        ui_print("Updating boot animation in /data/local/moodle");
         run_program("/sbin/mkdir", "-p", "/data/local/moodle");
-        # Always put bootanimation.zip in /data/local since /system/bin/bootanimation will check there first and it won't break OTA updates
         package_extract_file("bootanimation.zip", "/data/local/moodle/bootanimation.zip");
         set_metadata_recursive("/data/local/moodle", "uid", 1003, "gid", 9004, "fmode", 0660, "dmode", 0770, "selabel", "u:object_r:moodle_data_file:s0");
+    else
+        # This fails on the Moto E4, likely because TWRP hangs when accessing the OEM partition
+        if
+            run_program("/sbin/grep", "/oem/media/bootanimation.zip", "/system/bin/bootanimation") == "0"
+        then
+            ui_print("Updating boot animation in /oem/media");
+            mount("ext4", "EMMC", "/dev/block/bootdevice/by-name/oem", "/oem", "max_batch_time=0,commit=1,data=ordered,barrier=1,errors=panic,nodelalloc");
+            run_program("/sbin/mkdir", "-p", "/oem/media");
+            package_extract_file("bootanimation.zip", "/oem/media/bootanimation.zip");
+            set_metadata("/oem/media/bootanimation.zip", "mode", 0644);
+            ifelse(is_mounted("/oem") == "/oem", unmount("/oem"));
+        # else
+            ui_print("WARNING: Unsupported device. Boot animation not updated.");
+            ui_print("ro.product.device=" + getprop("ro.product.device"));
+            ui_print("ro.build.product=" + getprop("ro.build.product"));
+            ui_print("ro.cm.device=" + getprop("ro.cm.device"));
+        endif;
     endif;
 else
     ui_print("Custom ROM detected");

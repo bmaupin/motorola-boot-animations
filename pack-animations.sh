@@ -30,9 +30,7 @@ for animation in `ls -1 common/boot-animations`; do
     zip -r ../$stock_prefix$animation.zip META-INF
     cd ../common/boot-animations/$animation
     zip -r ../../../$stock_prefix$animation.zip .
-    cd ../..
-    zip ../$stock_prefix$animation.zip oem.img
-    cd ..
+    cd ../../..
 done
 
 # Zip the boot animations for custom ROMs
