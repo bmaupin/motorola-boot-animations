@@ -21,11 +21,21 @@ if
     file_getprop("/system/build.prop", "ro.modversion") == ""
 then
     ui_print("Stock ROM detected");
-    ui_print("Updating boot animation");
-    run_program("/sbin/mkdir", "-p", "/data/local/moodle");
-    # Always put bootanimation.zip in /data/local since /system/bin/bootanimation will check there first and it won't break OTA updates
-    package_extract_file("bootanimation.zip", "/data/local/moodle/bootanimation.zip");
-    set_metadata_recursive("/data/local/moodle", "uid", 1003, "gid", 9004, "fmode", 0660, "dmode", 0770, "selabel", "u:object_r:moodle_data_file:s0");
+    # Try to put bootanimation.zip in /data/local if possible since it's less intrusive
+    # Unfortunately support for this was dropped from Motorola's /system/bin/bootanimation in 2017
+    if
+        run_program("/sbin/grep", "/data/local/moodle/bootanimation.zip", "/system/bin/bootanimation") == "0"
+    then
+        ui_print("Updating boot animation in /data/local/moodle");
+        run_program("/sbin/mkdir", "-p", "/data/local/moodle");
+        package_extract_file("bootanimation.zip", "/data/local/moodle/bootanimation.zip");
+        set_metadata_recursive("/data/local/moodle", "uid", 1003, "gid", 9004, "fmode", 0660, "dmode", 0770, "selabel", "u:object_r:moodle_data_file:s0");
+    else
+        ui_print("WARNING: Unsupported device. Boot animation not updated.");
+        ui_print("ro.product.device=" + getprop("ro.product.device"));
+        ui_print("ro.build.product=" + getprop("ro.build.product"));
+        ui_print("ro.cm.device=" + getprop("ro.cm.device"));
+    endif;
 else
     ui_print("Custom ROM detected");
     abort("ERROR: This package is only for stock ROMs. Please use a package for custom ROMs. Aborting.");
