@@ -170,13 +170,12 @@ If for some reason you want to install the logo or boot animation manually (for 
     sudo mkdir /mnt/oem/media
     sudo cp /path/to/bootanimation.zip /mnt/oem/media/
     sudo umount /mnt/oem
-    img2simg oem.raw.img.new oem.img.new
     ```
 
 1. Boot your phone into fastboot mode and flash the new OEM partition
 
     ```
-    sudo fastboot flash oem oem.img.new
+    sudo fastboot flash oem oem.raw.img.new
     ```
 
 
