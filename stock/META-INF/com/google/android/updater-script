@@ -69,10 +69,17 @@ else
         then
             package_extract_file("logo/moto-g-2015/logo.bin", "/dev/block/bootdevice/by-name/logo");
         else
-            ui_print("WARNING: Unsupported device. Logo not updated.");
-            ui_print("ro.product.device=" + getprop("ro.product.device"));
-            ui_print("ro.build.product=" + getprop("ro.build.product"));
-            ui_print("ro.cm.device=" + getprop("ro.cm.device"));
+            if
+                # Moto E4
+                is_substring("perry", getprop("ro.product.device")) || is_substring("perry", getprop("ro.build.product")) || is_substring("perry", getprop("ro.cm.device"))
+            then
+                package_extract_file("logo/moto-e4/logo.bin", "/dev/block/bootdevice/by-name/logo");
+            else
+                ui_print("WARNING: Unsupported device. Logo not updated.");
+                ui_print("ro.product.device=" + getprop("ro.product.device"));
+                ui_print("ro.build.product=" + getprop("ro.build.product"));
+                ui_print("ro.cm.device=" + getprop("ro.cm.device"));
+            endif;
         endif;
     endif;
 endif;

@@ -5,16 +5,17 @@ All official Motorola Android boot animations for the Moto G
 #### Features
 - Only official boot animations from Motorola and Lenovo
 - Matching logos included
-- Should be compatible with all versions of the Moto G released before 2016, including LTE versions (see below for compatibility)
 - Carrier branding removed
 - Warning message removed for phones with unlocked bootloaders
 - Unlocked boot loader required for installation (root not required)
 
+
 #### Installation
 See: [Installation](wiki/installation.md)
 
+
 #### Compatibility
-These boot animations should work with any model of the Moto G released before 2016. Here's what's been tested so far:
+These boot animations should work with any model of the Moto G released before 2016 (including LTE versions). Here's what's been tested so far:
 
 Phone | Model | ROM | ro.product.device | Status
 --- | --- | --- | --- | ---
@@ -22,6 +23,7 @@ Moto G 2013 US GSM (AWS) | XT1034 | stock | falcon_umts | works
 Moto G 2015 US GSM | XT1540 | stock | osprey_u2 | works
 Moto G 2015 Europe | XT1541 | CM 13.0 |  | works
 Moto G 2015 Latin America dual SIM | XT1543 | stock |  | works
+
 
 #### Animations
 - April Fools'  
