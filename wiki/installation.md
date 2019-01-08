@@ -37,8 +37,8 @@
         1. Install the Android SDK platform tools
             - Ubuntu:
 
-                  sudo apt-get install android-tools-adb
-                  sudo apt-get install android-tools-fastboot
+                  sudo apt install adb
+                  sudo apt install fastboot
 
             - OS X:
 
@@ -73,11 +73,11 @@
             2. (Optional) Flash the custom recovery  
                 **Warning:** a custom recovery will break OTA updates. You will need to flash the stock recovery first before attempting to install any OTA updates.
             
-                   sudo fastboot flash recovery twrp-2.8.7.0.-falcon_STOCK_NOTHEME.img
+                   fastboot flash recovery twrp-2.8.7.0.-falcon_STOCK_NOTHEME.img
 
             3. Boot the custom recovery
             
-                   sudo fastboot boot twrp-2.8.7.0.-falcon_STOCK_NOTHEME.img
+                   fastboot boot twrp-2.8.7.0.-falcon_STOCK_NOTHEME.img
 
 6. Flash the boot animation
     1. Tap _Install_
@@ -175,7 +175,7 @@ If for some reason you want to install the logo or boot animation manually (for 
 1. Boot your phone into fastboot mode and flash the new OEM partition
 
     ```
-    sudo fastboot flash oem oem.raw.img.new
+    fastboot flash oem oem.raw.img.new
     ```
 
 
@@ -190,4 +190,4 @@ If for some reason you want to install the logo or boot animation manually (for 
 
 4. Flash the logo (requires the Android SDK Tools; see above)
 
-       sudo fastboot flash logo logo.bin
+       fastboot flash logo logo.bin
