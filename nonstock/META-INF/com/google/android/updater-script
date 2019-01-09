@@ -77,7 +77,9 @@ else
         else
             if
                 # Moto E4
-                is_substring("perry", getprop("ro.product.device")) || is_substring("perry", getprop("ro.build.product")) || is_substring("perry", getprop("ro.cm.device"))
+                is_substring("perry", getprop("ro.product.device")) || is_substring("woods", getprop("ro.product.device")) ||
+                # Moto E4 Plus
+                is_substring("nicklaus", getprop("ro.product.device")) || is_substring("owens", getprop("ro.product.device"))
             then
                 package_extract_file("logo/moto-e4/logo.bin", "/dev/block/bootdevice/by-name/logo");
             else
