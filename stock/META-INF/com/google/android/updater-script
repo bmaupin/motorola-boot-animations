@@ -26,7 +26,7 @@ then
     if
         run_program("/sbin/grep", "/data/local/moodle/bootanimation.zip", "/system/bin/bootanimation") == "0"
     then
-        ui_print("Updating boot animation in /data/local/moodle");
+        ui_print("Updating boot animation in /data/local/moodle/");
         run_program("/sbin/mkdir", "-p", "/data/local/moodle");
         package_extract_file("bootanimation.zip", "/data/local/moodle/bootanimation.zip");
         set_metadata_recursive("/data/local/moodle", "uid", 1003, "gid", 9004, "fmode", 0660, "dmode", 0770, "selabel", "u:object_r:moodle_data_file:s0");

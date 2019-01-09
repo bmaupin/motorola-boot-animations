@@ -21,14 +21,15 @@ if
     file_getprop("/system/build.prop", "ro.modversion") != ""
 then
     ui_print("Custom ROM detected");
-    ui_print("Updating boot animation");
-    # First try copying to /data/system/theme, if it exists, since that's better than writing to /system
+    # Try to put bootanimation.zip in /data/system/theme if possible since it's less intrusive
+    # Unfortunately support for this was dropped starting with CyanogenMod 14 (https://www.androidpolice.com/2017/10/16/cyanogenmod-theme-engine-gone-good-lineageos-removes-supporting-code/)
     if
-        package_extract_file("bootanimation.zip", "/data/system/theme/bootanimation.zip")
+        run_program("/sbin/grep", "/data/system/theme/bootanimation.zip", "/system/bin/bootanimation") == "0"
     then
+        ui_print("Updating boot animation in /data/system/theme/");
+        run_program("/sbin/mkdir", "-p", "/data/system/theme");
+        package_extract_file("bootanimation.zip", "/data/system/theme/bootanimation.zip");
         set_metadata("/data/system/theme/bootanimation.zip", "mode", 0644);
-
-    # If that doesn't work, overwrite /system/media/bootanimation.zip
     else
         # Back up /system/media/bootanimation.zip if a backup doesn't exist yet
         if
@@ -38,7 +39,7 @@ then
             ui_print("Backing up /system/media/bootanimation.zip");
             run_program("/sbin/cp", "-p", "/system/media/bootanimation.zip", "/system/media/bootanimation.zip.bak");
         endif;
-
+        ui_print("Updating boot animation in /system/media/");
         package_extract_file("bootanimation.zip", "/system/media/bootanimation.zip");
         set_metadata("/system/media/bootanimation.zip", "mode", 0644);
     endif;
