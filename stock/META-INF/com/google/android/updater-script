@@ -31,10 +31,23 @@ then
         package_extract_file("bootanimation.zip", "/data/local/moodle/bootanimation.zip");
         set_metadata_recursive("/data/local/moodle", "uid", 1003, "gid", 9004, "fmode", 0660, "dmode", 0770, "selabel", "u:object_r:moodle_data_file:s0");
     else
-        ui_print("WARNING: Unsupported device. Boot animation not updated.");
-        ui_print("ro.product.device=" + getprop("ro.product.device"));
-        ui_print("ro.build.product=" + getprop("ro.build.product"));
-        ui_print("ro.cm.device=" + getprop("ro.cm.device"));
+        if
+            run_program("/sbin/grep", "/oem/media/bootanimation.zip", "/system/bin/bootanimation") == "0"
+        then
+            ui_print("Updating boot animation in /oem/media/");
+            ui_print("NOTE: If this hangs, your device may not be supported.");
+            # This will fail on some devices (perry) because TWRP will hang when accessing the OEM partition (why is that?)
+            mount("ext4", "EMMC", "/dev/block/bootdevice/by-name/oem", "/oem", "nosuid,nodev,context=u:object_r:oemfs:s0");
+            run_program("/sbin/mkdir", "-p", "/oem/media");
+            package_extract_file("bootanimation.zip", "/oem/media/bootanimation.zip");
+            set_metadata("/oem/media/bootanimation.zip", "mode", 0644);
+            ifelse(is_mounted("/oem") == "/oem", unmount("/oem"));
+        else
+            ui_print("WARNING: Unsupported device. Boot animation not updated.");
+            ui_print("ro.product.device=" + getprop("ro.product.device"));
+            ui_print("ro.build.product=" + getprop("ro.build.product"));
+            ui_print("ro.cm.device=" + getprop("ro.cm.device"));
+        endif;
     endif;
 else
     ui_print("Custom ROM detected");
