@@ -22,7 +22,7 @@ if
 then
     ui_print("Stock ROM detected");
     # Try to put bootanimation.zip in /data/local if possible since it's less intrusive
-    # Unfortunately support for this was dropped from Motorola's /system/bin/bootanimation in 2017
+    # Unfortunately support for this was dropped from Motorola's bootanimation binary in 2017
     if
         run_program("/sbin/grep", "/data/local/moodle/bootanimation.zip", "/system/bin/bootanimation") == "0"
     then
@@ -45,8 +45,7 @@ then
         else
             ui_print("WARNING: Unsupported device. Boot animation not updated.");
             ui_print("ro.product.device=" + getprop("ro.product.device"));
-            ui_print("ro.build.product=" + getprop("ro.build.product"));
-            ui_print("ro.cm.device=" + getprop("ro.cm.device"));
+            ui_print("ro.modversion=" + getprop("ro.modversion"));
         endif;
     endif;
 else
@@ -92,8 +91,7 @@ else
             else
                 ui_print("WARNING: Unsupported device. Logo not updated.");
                 ui_print("ro.product.device=" + getprop("ro.product.device"));
-                ui_print("ro.build.product=" + getprop("ro.build.product"));
-                ui_print("ro.cm.device=" + getprop("ro.cm.device"));
+                ui_print("ro.modversion=" + getprop("ro.modversion"));
             endif;
         endif;
     endif;

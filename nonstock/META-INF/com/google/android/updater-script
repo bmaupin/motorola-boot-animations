@@ -86,8 +86,7 @@ else
             else
                 ui_print("WARNING: Unsupported device. Logo not updated.");
                 ui_print("ro.product.device=" + getprop("ro.product.device"));
-                ui_print("ro.build.product=" + getprop("ro.build.product"));
-                ui_print("ro.cm.device=" + getprop("ro.cm.device"));
+                ui_print("ro.modversion=" + getprop("ro.modversion"));
             endif;
         endif;
     endif;
