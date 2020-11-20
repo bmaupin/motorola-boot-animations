@@ -20,8 +20,10 @@ These boot animations should work with any model of the Moto G released before 2
 Phone | Model | ROM | ro.product.device | Status
 --- | --- | --- | --- | ---
 Moto G 2013 US GSM (AWS) | XT1034 | stock | falcon_umts | works
+Motorola Moto G 4G | XT1039 | /e/ OS (LineageOS 7.1.2-based) |  | [works](https://github.com/bmaupin/motorola-boot-animations/issues/1)
 Moto G 2015 US GSM | XT1540 | stock | osprey_u2 | works
 Moto G 2015 Europe | XT1541 | CM 13.0 |  | works
+Moto G 2015 Europe | XT1541 | /e/ OS (LineageOS 7.1.2-based) |  | [works](https://github.com/bmaupin/motorola-boot-animations/issues/2)
 Moto G 2015 Latin America dual SIM | XT1543 | stock |  | works
 
 
